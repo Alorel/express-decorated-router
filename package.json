@@ -1,0 +1,41 @@
+{
+  "name": "express-decorated-router",
+  "version": "0.1.0",
+  "description": "Define Express routes using TypeScript decorators",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "express",
+    "decorator",
+    "router",
+    "decorated",
+    "ts",
+    "typescript"
+  ],
+  "homepage": "https://github.com/Alorel/express-decorated-router",
+  "bugs": {
+    "url": "https://github.com/Alorel/express-decorated-router/issues"
+  },
+  "author": {
+    "name": "Alorel",
+    "url": "https://github.com/Alorel",
+    "email": "a.molcanovas@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alorel/express-decorated-router.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "tslib": ">=1.0"
+  },
+  "peerDependencies": {
+    "express": ">=4.0 <5.0"
+  },
+  "devDependencies": {
+    "express": "^4.15.4",
+    "typescript": "^2.4.2"
+  }
+}
