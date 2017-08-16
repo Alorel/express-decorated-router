@@ -12,16 +12,77 @@ as static classes with the help of TypeScript's decorators.
 
 
 - [API](#api)
-  - [@Controller](#controller)
+  - [`@Controller(path: string)`](#controllerpath-string)
+  - [`@ControllerMiddleware(...middleware: RequestHandler[])`](#controllermiddlewaremiddleware-requesthandler)
+  - [Route decorators](#route-decorators)
+  - [`@Method(httpMethod: string, path: string)`](#methodhttpmethod-string-path-string)
+  - [`@RouteMiddleware(...middleware: RequestHandler[])`](#routemiddlewaremiddleware-requesthandler)
+  - [ControllerLoader](#controllerloader)
 - [Examples](#examples)
   - [Basic Controller](#basic-controller)
+  - [Loading routes from a single controller](#loading-routes-from-a-single-controller)
+  - [Loading routes from a directory of controllers](#loading-routes-from-a-directory-of-controllers)
   - [Example App](#example-app)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # API
 
-## @Controller
+## `@Controller(path: string)`
+
+Decorate the class as a controller and specify its root path
+
+## `@ControllerMiddleware(...middleware: RequestHandler[])`
+
+Specify a list of middleware functions that will run before every route
+in this controller. These functions will run in the order in which they
+were defined, before any route-specific middleware functions.
+
+## Route decorators
+
+The following route decorators are supported:
+
+* `@ALL(path: string)`
+* `@DELETE(path: string)`
+* `@GET(path: string)`
+* `@HEAD(path: string)`
+* `@OPTIONS(path: string)`
+* `@PATCH(path: string)`
+* `@POST(path: string)`
+* `@PUT(path: string)`
+
+Each makes the class static method accept requests on that HTTP method.
+The annotations **must only be used on static methods**.
+
+## `@Method(httpMethod: string, path: string)`
+
+A lower level route decorator which allows you to specify the HTTP
+method manually. This is mapped directly to Express' router methods,
+e.g. `@Method('get', '/')` maps to `router.get()`.
+
+## `@RouteMiddleware(...middleware: RequestHandler[])`
+
+Same as [`@ControllerMiddleware`](#controllermiddlewaremiddleware-requesthandler),
+but makes the middleware apply only to this route.
+
+## ControllerLoader
+
+A class responsible for parsing and loading controllers into your app.
+When multiple controller files are loaded, **each file must export only
+the controller class**, i.e.
+
+```typescript
+@Controller('/foo')
+class FooController {
+  // ... routes
+}
+
+export = FooController;
+```
+
+See [Loading routes from a single controller](#loading-routes-from-a-single-controller)
+and [Loading routes from a directory of controllers](#loading-routes-from-a-directory-of-controllers).
+
 
 # Examples
 
@@ -80,6 +141,22 @@ class UserAPI {
 }
 
 export = UserAPI;
+```
+
+## Loading routes from a single controller
+
+```typescript
+const app: Application = express();
+const controllerLoader: ControllerLoader = new ControllerLoader(app);
+controllerLoader.loadController(FooController);
+```
+
+## Loading routes from a directory of controllers
+
+```typescript
+const app: Application = express();
+const controllerLoader: ControllerLoader = new ControllerLoader(app);
+controllerLoader.loadDirectories('./path/to/controllers/**/*.js');
 ```
 
 ## Example App
