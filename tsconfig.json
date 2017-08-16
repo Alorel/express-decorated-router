@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "strict": true,
+    "alwaysStrict": true,
+    "outDir": "dist",
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "removeComments": false,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "ES6",
+    "sourceMap": false,
+    "importHelpers": true,
+    "lib": [
+      "ES5",
+      "ES6"
+    ],
+    "baseUrl": "./app"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
