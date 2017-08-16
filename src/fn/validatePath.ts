@@ -10,7 +10,7 @@ export const validatePath = (path: string): void => {
     throw new Error('Path is required');
   } else if (!isString(path)) {
     throw new Error('Path must be a string');
-  } else if (!startsWith(path, '/')) {
+  } else if (!startsWith(path, '/') && path.charAt(0) !== '*') {
     throw new Error('Path must start with a slash');
   } else if (path.length > 1 && endsWith(path, '/')) {
     throw new Error('Path must not end with a slash');

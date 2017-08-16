@@ -13,7 +13,7 @@ exports.validatePath = (path) => {
     else if (!lodash_1.isString(path)) {
         throw new Error('Path must be a string');
     }
-    else if (!lodash_1.startsWith(path, '/')) {
+    else if (!lodash_1.startsWith(path, '/') && path.charAt(0) !== '*') {
         throw new Error('Path must start with a slash');
     }
     else if (path.length > 1 && lodash_1.endsWith(path, '/')) {
