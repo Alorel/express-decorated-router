@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Potato Farm</title>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+</head>
+<body>
+
+<h1>Potato Farm</h1>
+<p>Open up the console and check the requests!</p>
+
+<div>
+  <label>
+    <span>Potato ID:</span>
+    <input id="potatoID" type="number" value="1"/>
+  </label>
+  <label>
+    <span>Potato Size:</span>
+    <input id="potatoSize"/>
+  </label>
+</div>
+
+<div>
+  <button type="button" id="fetch-all">Fetch all potatoes</button>
+  <button type="button" id="fetch">Fetch potato by ID</button>
+  <button type="button" id="create">Create potato</button>
+  <button type="button" id="put">PUT potato</button>
+  <button type="button" id="destroy">Delete potato</button>
+</div>
+
+<script>
+  (function () {
+    var potatoID = document.getElementById('potatoID'),
+      potatoSize = document.getElementById('potatoSize');
+
+    document.getElementById('fetch-all').addEventListener('click', function () {
+      fetch('/potato');
+    });
+
+    document.getElementById('fetch').addEventListener('click', function () {
+      fetch('/potato/' + potatoID.value);
+    });
+
+    document.getElementById('create').addEventListener('click', function () {
+      fetch('/potato', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: parseInt(potatoID.value),
+          size: potatoSize.value.trim()
+        })
+      })
+    });
+
+    document.getElementById('put').addEventListener('click', function () {
+      fetch('/potato', {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: parseInt(potatoID.value),
+          size: potatoSize.value.trim()
+        })
+      })
+    });
+
+    document.getElementById('destroy').addEventListener('click', function () {
+      fetch('/potato/' + potatoID.value, {
+        method: 'DELETE'
+      });
+    });
+
+  })();
+</script>
+
+</body>
+</html>
