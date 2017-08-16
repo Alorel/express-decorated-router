@@ -41,12 +41,22 @@ export class ControllerLoader {
 
   /**
    * Load controller classes from the given directories. The classes will be {@link parseController cleaned}.
+   * Each file must export only the controller, i.e.
+   * <code>
+   * class MyController {}
+   * export = MyController;
+   * </code>
    * @param {string} globs Glob patterns to load from
    */
   public loadDirectories(...globs: string[]): void;
 
   /**
    * Load controller classes from the given directories.
+   * Each file must export only the controller, i.e.
+   * <code>
+   * class MyController {}
+   * export = MyController;
+   * </code>
    * @param {boolean} clean See {@link parseController}
    * @param {string} globs Glob patterns to load from
    */
