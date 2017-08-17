@@ -1,5 +1,7 @@
 # Express Decorated Router
 
+[![NPM](https://nodei.co/npm/express-decorated-router.png?compact=true)](https://www.npmjs.com/package/express-decorated-router)
+
 Defining a large Express controller can be a pain as your IDE (probably)
 won't allow you to navigate each route in its project window. Express
 Decorated Router solves the problem by allowing controllers to be defined
