@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const lodash_1 = require("lodash");
 const parseController_1 = require("./fn/parseController");
@@ -11,9 +10,13 @@ class ControllerLoader {
     /**
      * Constructor
      * @param {Application} app Reference to your Express app
+     * @param {LoggerFunction} logger A function used for logging the loader
      */
-    constructor(app) {
+    constructor(app, logger) {
         this.app = app;
+        if (logger) {
+            this.log = logger;
+        }
     }
     /**
      * Load a controller
@@ -21,6 +24,7 @@ class ControllerLoader {
      * @param {boolean} clean See {@link parseController}
      */
     loadController(controllerClass, clean = true) {
+        this.log(`Parsing controller ${controllerClass.name}`);
         const parsed = parseController_1.parseController(controllerClass, clean);
         const router = express_1.Router();
         lodash_1.forEach(parsed.defs, (routes, httpMethod) => {
@@ -28,6 +32,7 @@ class ControllerLoader {
                 if (!lodash_1.isArray(defs)) {
                     defs = [defs];
                 }
+                this.log(`Adding route ${httpMethod.toUpperCase()} ${parsed.root}${path === '/' ? '' : path === '*' ? '/*' : path}`);
                 router[httpMethod](path, ...defs);
             });
         });
@@ -53,3 +58,5 @@ class ControllerLoader {
     }
 }
 exports.ControllerLoader = ControllerLoader;
+ControllerLoader.prototype.log = () => {
+};

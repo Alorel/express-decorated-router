@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
 /**
  * Apply middleware to all routes within this controller

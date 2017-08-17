@@ -1,15 +1,24 @@
 /// <reference types="express" />
 import {Application} from "express";
+import {LoggerFunction} from "./interfaces/LoggerFunction";
+
 /**
  * Class for loading controller definitions into your Express app
  */
 export declare class ControllerLoader {
     private readonly app;
+    log: LoggerFunction;
     /**
      * Constructor
      * @param {Application} app Reference to your Express app
      */
     constructor(app: Application);
+    /**
+     * Constructor
+     * @param {Application} app Reference to your Express app
+     * @param {LoggerFunction} logger A function used for logging the loader
+     */
+    constructor(app: Application, logger: LoggerFunction);
     /**
      * Load a controller
      * @param controllerClass The controller class

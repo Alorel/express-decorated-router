@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
 /**
  * Validate the path, throwing an error if it's invalid

@@ -3,18 +3,35 @@ import {forEach, isArray, isString} from 'lodash';
 import {parseController} from "./fn/parseController";
 import {IRoutes} from "./interfaces/IRoutes";
 import {sync} from 'glob';
+import {LoggerFunction} from "./interfaces/LoggerFunction";
 
 /**
  * Class for loading controller definitions into your Express app
  */
 export class ControllerLoader {
 
+  public log: LoggerFunction;
+
   /**
    * Constructor
    * @param {Application} app Reference to your Express app
    */
-  constructor(private readonly app: Application) {
-
+  constructor(app: Application);
+  /**
+   * Constructor
+   * @param {Application} app Reference to your Express app
+   * @param {LoggerFunction} logger A function used for logging the loader
+   */
+  constructor(app: Application, logger: LoggerFunction);
+  /**
+   * Constructor
+   * @param {Application} app Reference to your Express app
+   * @param {LoggerFunction} logger A function used for logging the loader
+   */
+  constructor(private readonly app: Application, logger?: LoggerFunction) {
+    if (logger) {
+      this.log = logger;
+    }
   }
 
   /**
@@ -23,6 +40,7 @@ export class ControllerLoader {
    * @param {boolean} clean See {@link parseController}
    */
   public loadController(controllerClass: any, clean: boolean = true): void {
+    this.log(`Parsing controller ${controllerClass.name}`);
     const parsed = parseController(controllerClass, clean);
     const router = Router();
 
@@ -32,6 +50,7 @@ export class ControllerLoader {
           defs = [defs];
         }
 
+        this.log(`Adding route ${httpMethod.toUpperCase()} ${parsed.root}${path === '/' ? '' : path === '*' ? '/*' : path}`);
         router[httpMethod](path, ...defs);
       });
     });
@@ -82,3 +101,6 @@ export class ControllerLoader {
     }
   }
 }
+
+ControllerLoader.prototype.log = () => {
+};
