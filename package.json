@@ -1,15 +1,17 @@
 {
   "name": "express-decorated-router",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Define Express routes using TypeScript decorators",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "update-toc": "doctoc README.md --github",
     "build": "rm -rf dist && ./node_modules/typescript/bin/tsc",
     "rm:esmodule": "node ./build/rm-__esmodule.js",
     "rm:empty": "node ./build/rm-empty.js",
-    "build:dist": "npm run build && npm run rm:esmodule && npm run rm:empty"
+    "build:dist": "npm run build && npm run rm:esmodule && npm run rm:empty",
+    "snyk-wiz": "snyk wizard",
+    "snyk-protect": "snyk protect",
+    "prepare": "snyk protect"
   },
   "engines": {
     "node": ">=4.7"
@@ -37,8 +39,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "glob": "^7.0",
+    "glob": ">=7.0 <8.0",
     "lodash": ">=3.7.0 <5.0",
+    "snyk": ">=1.0 <2.0",
     "tslib": ">=1.6"
   },
   "peerDependencies": {
