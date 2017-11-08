@@ -9,7 +9,7 @@
     "rm:esmodule": "node ./build/rm-__esmodule.js",
     "rm:empty": "node ./build/rm-empty.js",
     "build:dist": "npm run build && npm run rm:esmodule && npm run rm:empty",
-    "snyk-wiz": "snyk wizard",
+    "snyk:wizard": "snyk wizard --dev",
     "snyk-protect": "snyk protect"
   },
   "engines": {
