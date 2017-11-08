@@ -1,7 +1,5 @@
 # Express Decorated Router
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Alorel/express-decorated-router.svg)](https://greenkeeper.io/)
-
 [![NPM](https://nodei.co/npm/express-decorated-router.png?compact=true)](https://www.npmjs.com/package/express-decorated-router)
 
 Defining a large Express controller can be a pain as your IDE (probably)
