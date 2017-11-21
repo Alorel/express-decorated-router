@@ -2,7 +2,7 @@ language: node_js
 node_js: 9
 script:
   - greenkeeper-lockfile-update
-  - greenkeeper-lockfile-upload
+  - if [ $GH_TOKEN ]; then greenkeeper-lockfile-upload; fi;
 
 cache:
   directories:
