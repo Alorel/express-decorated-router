@@ -6,7 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "update-toc": "doctoc README.md --github",
-    "build": "rm -rf dist && ./node_modules/typescript/bin/tsc"
+    "build": "rimraf dist && tsc",
+    "lint": "tslint -s node_modules/custom-tslint-formatters/formatters -t grouped 'src/**/*.ts'",
+    "lint:fix": "npm run lint -- --fix"
   },
   "engines": {
     "node": ">=4.7"
@@ -46,6 +48,7 @@
     "@types/glob": "^5.0.31",
     "@types/lodash": "^4.14",
     "bluebird": "^3.5.0",
+    "coveralls": "^3.0.0",
     "custom-tslint-formatters": "^2.1.1",
     "doctoc": "^1.3.0",
     "express": "^4.15",

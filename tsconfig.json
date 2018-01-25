@@ -26,7 +26,7 @@
     "alwaysStrict": true
   },
   "include": [
-    "server/**/*.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
