@@ -1,5 +1,5 @@
 import {RequestHandler} from 'express';
-import {RouteRepository} from '../RouteRepository';
+import {ExpressDecoratedRouter} from '../ExpressDecoratedRouter';
 import {Util} from '../Util';
 
 export function ControllerMiddleware(...middleware: RequestHandler[]): ClassDecorator {
@@ -9,7 +9,7 @@ export function ControllerMiddleware(...middleware: RequestHandler[]): ClassDeco
 
   return function(constructor: any): void {
     if (middleware.length) {
-      RouteRepository.addControllerMiddleware(constructor, middleware);
+      ExpressDecoratedRouter.addControllerMiddleware(constructor, middleware);
     }
   };
 }

@@ -1,5 +1,5 @@
 import {RequestHandler} from 'express';
-import {RouteRepository} from '../RouteRepository';
+import {ExpressDecoratedRouter} from '../ExpressDecoratedRouter';
 import {Util} from '../Util';
 
 export function RouteMiddleware(...middleware: RequestHandler[]): MethodDecorator {
@@ -20,7 +20,7 @@ export function RouteMiddleware(...middleware: RequestHandler[]): MethodDecorato
         Util.validateMiddleware(mid);
       }
 
-      RouteRepository.addRouteMiddleware(target, descriptor.value, middleware);
+      ExpressDecoratedRouter.addRouteMiddleware(descriptor.value, middleware);
     }
   };
 }

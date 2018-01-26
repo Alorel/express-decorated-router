@@ -1,4 +1,4 @@
-import {RouteRepository} from '../../RouteRepository';
+import {ExpressDecoratedRouter} from '../../ExpressDecoratedRouter';
 import {Util} from '../../Util';
 
 export function Method(httpMethod: string, path: string): MethodDecorator {
@@ -15,6 +15,6 @@ export function Method(httpMethod: string, path: string): MethodDecorator {
       throw new Error('Unable to determine property descriptor value');
     }
 
-    RouteRepository.addRoute(target, httpMethod, path, descriptor.value);
+    ExpressDecoratedRouter.addRoute(target, httpMethod, path, descriptor.value);
   };
 }
