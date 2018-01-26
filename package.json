@@ -11,7 +11,8 @@
     "build": "rimraf dist && tsc",
     "watch": "npm run build -- --watch",
     "lint": "tslint -p ./tsconfig.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "test": "nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts"
   },
   "engines": {
     "node": ">=6.0"
@@ -49,11 +50,13 @@
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/lodash": "^4.14",
+    "@types/mocha": "^2.2.47",
     "@types/supertest": "^2.0.4",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "custom-tslint-formatters": "^2.1.1",
     "express": "^4.15",
+    "mocha": "^5.0.0",
     "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.3",
