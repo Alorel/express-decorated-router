@@ -1,0 +1,7 @@
+{
+  "extends": "../tslint.json",
+  "rules": {
+    "no-empty": false,
+    "max-classes-per-file": false
+  }
+}

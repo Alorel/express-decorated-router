@@ -1,6 +1,14 @@
 import {expect} from 'chai';
 import {ALL} from '../src/decorators/method/ALL';
+import {DELETE} from '../src/decorators/method/DELETE';
+import {GET} from '../src/decorators/method/GET';
+import {OPTIONS} from '../src/decorators/method/HEAD';
+import {HEAD} from '../src/decorators/method/OPTIONS';
+import {PATCH} from '../src/decorators/method/PATCH';
+import {POST} from '../src/decorators/method/POST';
+import {PUT} from '../src/decorators/method/PUT';
 import {ExpressDecoratedRouter} from '../src/ExpressDecoratedRouter';
+import forEach = require('lodash/forEach');
 
 describe('Decorators base', () => {
   let originalAddRoute = ExpressDecoratedRouter.addRoute;
@@ -18,18 +26,31 @@ describe('Decorators base', () => {
     ExpressDecoratedRouter.addRoute = originalAddRoute;
   });
 
-  it('ALL should add an "all" route', () => {
-    class X {
-      @ALL('/foo')
-      public static y() {
-      }
-    }
+  const decorators = {
+    ALL: ALL,
+    DELETE: DELETE,
+    GET: GET,
+    HEAD: HEAD,
+    OPTIONS: OPTIONS,
+    PATCH: PATCH,
+    POST: POST,
+    PUT: PUT
+  };
 
-    expect(addRouteArgs).to.deep.eq([
-      X,
-      'all',
-      '/foo',
-      X.y
-    ]);
+  forEach(decorators, (decorator: (path: string) => MethodDecorator, name: string): void => {
+    it(`${name} should add an "${name.toLowerCase()} route`, () => {
+      class X {
+        @decorator('/foo')
+        public static y() {
+        }
+      }
+
+      expect(addRouteArgs).to.deep.eq([
+        X,
+        name.toLowerCase(),
+        '/foo',
+        X.y
+      ]);
+    });
   });
 });

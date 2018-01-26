@@ -1,24 +1,37 @@
 language: node_js
-node_js: 9
+sudo: false
+group: travis_latest
 
-script: npm run lint
-cache:
-  directories:
-    - node_modules
-before_cache: rm -rf node_modules/.cache
+stages:
+  - &testAndLint Test and lint
 
-#language: node_js
-#node_js: 9
-#script:
-#  - greenkeeper-lockfile-update
-#  - if [ $GH_TOKEN ]; then greenkeeper-lockfile-upload; fi;
-#
-#cache:
-#  directories:
-#    - node_modules
-#
-#before_cache: rm -rf node_modules/.cache
-#
-#env:
-#  global:
-#    secure: f5w0Er+fMIHktgGeHXaHLkJXZuw3+JjswkN4WvVR37h+oAs3crNeTUYM3vvgKx3mvqIblAzarAhNdJfmIW9chY4p4GSxlCiGiz+NDK9jE9bHfXC1URGwQi8f4K9gUHiWxz/rt0qIz7PIQT2W1YAPtwPfBCGxu21TDp9mWA2ARTnFy5XfFx6jhdRFTVWK70Z6bg+Ei4oQcm4MitqgXqGy0T8KTwli457l9K0HTlAy+eZscGE7lTaUC96QZJJMzEgN+EGb7toOZq8blW/TRAivH/P2HwbDVPWrJ4hLvH8PMxtRMBZxuYcGAubazMMAipYkZ5u8UVVm1L0sVJG90IB2LP5w6rDSG7lzeD2nHgGyJV8NTDYfJX7Gdfnk4ikWzhDCrc2zayXAPsMSuJd4GzJ3AOvTMHn/wlNtENdtQuVw3XkiTEy16H4SwuQDAodIo809SVqi7hT13ve+wQ1KHeW/fgmXV9rowD8s+pcQeT/HhefsETREtw5h5FfawAEsRS1JTlXhKWDv/k/Qr5a/bbEwitwt2zbtqadevJPjSUGaTfUEUGCCkgq9uRTE0gIE8lgh8hdUxxdEMmV0n6v00Ifb0tI0pbZXtzqMXoSQdMxpVfEpK5cXBdJDQSsFe0o+etUmXtzevFwwLaQDqIxMwz/dMRCgcsRnsyVa1GPSqKHS5aY=
+cached_stage: &cachedStage
+  cache:
+    directories:
+      - node_modules
+
+test_stage: &testStageBase
+  stage: *testAndLint
+  <<: *cachedStage
+  script: npm test
+  before_script: npm run typecheck
+  after_success: cat ./coverage/lcov.info | coveralls
+
+jobs:
+  include:
+    - stage: *testAndLint
+      <<: *cachedStage
+      node_js: &latestTested 9
+      env:
+        - LINT=1
+      before_install:
+        - cp package.json package.json.bak
+        - node ./build/filter-lint-depedencies.js
+      before_script: mv package.json.bak package.json -f
+      script: npm run lint
+    - <<: *testStageBase
+      node_js: 9
+    - <<: *testStageBase
+      node_js: 8
+    - <<: *testStageBase
+      node_js: 6
