@@ -1,11 +1,9 @@
 import {RouterOptions} from 'express';
+import {PathParams} from 'express-serve-static-core';
 import {ExpressDecoratedRouter} from '../ExpressDecoratedRouter';
-import {Util} from '../Util';
 
-export function Controller(root = '/', options?: RouterOptions): ClassDecorator {
-  Util.validatePath(root);
-
-  return function(constructor: any): void {
+export function Controller(root: PathParams = '/', options?: RouterOptions): ClassDecorator {
+  return (constructor: Function): void => {
     ExpressDecoratedRouter.addController(constructor, root, options);
   };
 }

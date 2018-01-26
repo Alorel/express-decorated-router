@@ -1,11 +1,9 @@
 import {Application, RequestHandler, Router as createRouter, RouterOptions} from 'express';
+import {PathParams} from 'express-serve-static-core';
 import forEach = require('lodash/forEach');
 import isEmpty = require('lodash/isEmpty');
-import set = require('lodash/set');
 
-interface HttpMethodSpec {
-  [path: string]: RequestHandler;
-}
+type HttpMethodSpec = Map<PathParams, RequestHandler>;
 
 interface RouteSpec {
   [httpMethod: string]: HttpMethodSpec;
@@ -13,7 +11,7 @@ interface RouteSpec {
 
 interface ControllerSpec {
   opts?: RouterOptions;
-  root: string;
+  root: PathParams;
 }
 
 const routeMap = new Map<any, RouteSpec>();
@@ -24,7 +22,7 @@ const routeMiddlewareMap = new Map<RequestHandler, RequestHandler[]>();
 export class ExpressDecoratedRouter {
 
   /** @internal */
-  public static addController(clazz: any, root: string, opts?: RouterOptions): void {
+  public static addController(clazz: Function, root: PathParams, opts?: RouterOptions): void {
     controllerMap.set(clazz, {root, opts});
   }
 
@@ -34,7 +32,7 @@ export class ExpressDecoratedRouter {
   }
 
   /** @internal */
-  public static addRoute(clazz: any, httpMethod: string, path: string, handler: RequestHandler): void {
+  public static addRoute(clazz: any, httpMethod: string, path: PathParams, handler: RequestHandler): void {
     let routeSpec: RouteSpec = <RouteSpec>routeMap.get(clazz);
 
     if (!routeSpec) {
@@ -42,7 +40,12 @@ export class ExpressDecoratedRouter {
       routeMap.set(clazz, routeSpec);
     }
 
-    set(routeSpec, [httpMethod, path], handler);
+    let httpMethodSpec: HttpMethodSpec = routeSpec[httpMethod];
+    if (!httpMethodSpec) {
+      httpMethodSpec = new Map<PathParams, RequestHandler>();
+    }
+
+    httpMethodSpec.set(path, handler);
   }
 
   /** @internal */
@@ -58,6 +61,10 @@ export class ExpressDecoratedRouter {
       if (!routeMap.has(clazz)) {
         continue;
       }
+      const routeSpec: RouteSpec = <RouteSpec>routeMap.get(clazz);
+      if (isEmpty(routeSpec)) {
+        continue;
+      }
 
       const router = createRouter(controllerSpec.opts);
 
@@ -65,20 +72,16 @@ export class ExpressDecoratedRouter {
         router.use(<RequestHandler[]>controllerMiddlewareMap.get(clazz));
       }
 
-      const routeSpec: RouteSpec = <RouteSpec>routeMap.get(clazz);
-
-      if (isEmpty(routeSpec)) {
-        continue;
-      }
-
       forEach(routeSpec, (httpMethodSpec: HttpMethodSpec, httpMethod: string): void => {
-        if (!isEmpty(httpMethodSpec)) {
-          forEach(httpMethodSpec, (handler: RequestHandler, path: string): void => {
-            if (routeMiddlewareMap.has(handler)) {
-              router.use(path, <RequestHandler[]>routeMiddlewareMap.get(handler));
-            }
-            router[httpMethod](path, handler);
-          });
+        for (const httpMethodSpecEntry of httpMethodSpec.entries()) {
+          const pathParams: PathParams = httpMethodSpecEntry[0];
+          const requestHandler: RequestHandler = httpMethodSpecEntry[1];
+
+          if (routeMiddlewareMap.has(requestHandler)) {
+            router.use(pathParams, <RequestHandler[]>routeMiddlewareMap.get(requestHandler));
+          }
+
+          router[httpMethod](pathParams, requestHandler);
         }
       });
 

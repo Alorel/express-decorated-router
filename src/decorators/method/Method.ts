@@ -1,13 +1,8 @@
+import {PathParams} from 'express-serve-static-core';
 import {ExpressDecoratedRouter} from '../../ExpressDecoratedRouter';
-import {Util} from '../../Util';
 
-export function Method(httpMethod: string, path: string): MethodDecorator {
-  Util.validatePath(path);
-
-  return function(target: any, key: string | symbol, descriptor: PropertyDescriptor): void {
-    if (!descriptor) {
-      descriptor = <PropertyDescriptor>Object.getOwnPropertyDescriptor(target, key);
-    }
+export function Method(httpMethod: string, path: PathParams): MethodDecorator {
+  return (target: any, _key: string | symbol, descriptor: PropertyDescriptor): void => {
     if (!descriptor) {
       throw new Error('Unable to get property descriptor');
     }

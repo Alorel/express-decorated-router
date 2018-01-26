@@ -1,5 +1,6 @@
+import {PathParams} from 'express-serve-static-core';
 import {Method} from './Method';
 
-export function PUT(path: string): MethodDecorator {
+export function PUT(path: PathParams): MethodDecorator {
   return Method('put', path);
 }
