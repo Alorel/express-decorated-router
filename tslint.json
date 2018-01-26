@@ -2,7 +2,9 @@
   "defaultSeverity": "error",
   "linterOptions": {
     "exclude": [
+      "**/example/**",
       "**/dist/**",
+      "**/build/**/*",
       "**/node_modules/**/*",
       "**/coverage/**/*"
     ]
@@ -61,8 +63,7 @@
     "unified-signatures": true,
     "await-promise": [
       true,
-      "Thenable",
-      "Bluebird"
+      "Thenable"
     ],
     "curly": [
       true,
@@ -110,6 +111,10 @@
         "allow-destructuring": true
       }
     ],
+    "no-unbound-method": [
+      true,
+      "ignore-static"
+    ],
     "no-unsafe-finally": true,
     "no-unused-expression": [
       true,
@@ -130,6 +135,7 @@
     "restrict-plus-operands": true,
     "switch-default": true,
     "triple-equals": true,
+    "typeof-compare": true,
     "use-isnan": true,
     "cyclomatic-complexity": [
       true,
