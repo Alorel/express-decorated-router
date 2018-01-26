@@ -1,39 +1,33 @@
-import {Application, RequestHandler, RouterOptions} from 'express';
-import set = require('lodash/set');
+import * as e from 'express';
+import {
+  ControllerMap,
+  ControllerMiddlewareMap,
+  ControllerRoutes,
+  ControllerSpec,
+  RouteMap,
+  RouteMiddlewareMap,
+  RouteSpec
+} from './InternalTypes';
 import {Util} from './Util';
-
-interface HttpMethodSpec {
-  [path: string]: RequestHandler;
-}
-
-interface RouteSpec {
-  [httpMethod: string]: HttpMethodSpec;
-}
-
-interface ControllerSpec {
-  conf?: RouterOptions;
-  path: string;
-}
-
-type ControllerRoutes = WeakMap<RequestHandler, RequestHandler[]>;
+import set = require('lodash/set');
 
 export class ExpressDecoratedRouter {
 
-  public readonly app: Application;
-  private readonly controllerMap = new WeakMap<any, ControllerSpec>();
-  private readonly controllerMiddlewareMap = new WeakMap<any, RequestHandler[]>();
-  private readonly routeMap = new WeakMap<any, RouteSpec>();
-  private readonly routeMiddlewareMap = new WeakMap<any, ControllerRoutes>();
+  public readonly app: e.Application;
+  private readonly controllerMap: ControllerMap = new WeakMap<any, ControllerSpec>();
+  private readonly controllerMiddlewareMap: ControllerMiddlewareMap = new WeakMap<any, e.RequestHandler[]>();
+  private readonly routeMap: RouteMap = new WeakMap<any, RouteSpec>();
+  private readonly routeMiddlewareMap: RouteMiddlewareMap = new WeakMap<any, ControllerRoutes>();
 
-  public constructor(app: Application) {
-    this.app = app;
+  public constructor(app?: e.Application) {
+    this.app = app || e();
   }
 
   public ALL(path: string): MethodDecorator {
     return this.Method('all', path);
   }
 
-  public Before(...middleware: RequestHandler[]): MethodDecorator {
+  public Before(...middleware: e.RequestHandler[]): MethodDecorator {
     return (target: any, key: string | symbol, descriptor: PropertyDescriptor): void => {
       if (middleware.length) {
         descriptor = Util.getAndValidateDescriptor(target, key, descriptor);
@@ -46,7 +40,7 @@ export class ExpressDecoratedRouter {
         let controllerRoutes: ControllerRoutes = <ControllerRoutes>this.routeMiddlewareMap.get(target);
 
         if (!controllerRoutes) {
-          controllerRoutes = new WeakMap<RequestHandler, RequestHandler[]>();
+          controllerRoutes = new WeakMap<e.RequestHandler, e.RequestHandler[]>();
           this.routeMiddlewareMap.set(target, controllerRoutes);
         }
 
@@ -55,7 +49,7 @@ export class ExpressDecoratedRouter {
     };
   }
 
-  public BeforeEach(...middleware: RequestHandler[]): ClassDecorator {
+  public BeforeEach(...middleware: e.RequestHandler[]): ClassDecorator {
     for (const mid of middleware) {
       Util.validateMiddleware(mid);
     }
@@ -67,7 +61,7 @@ export class ExpressDecoratedRouter {
     };
   }
 
-  public Controller(root = '/', config?: RouterOptions): ClassDecorator {
+  public Controller(root = '/', config?: e.RouterOptions): ClassDecorator {
     Util.validatePath(root);
 
     return (constructor: any): void => {

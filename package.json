@@ -8,7 +8,8 @@
     "update-toc": "doctoc README.md --github",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "npm run typecheck -- --watch",
-    "build": "rimraf dist && tsc",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
     "watch": "npm run build -- --watch",
     "lint": "tslint -p ./tsconfig.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
     "lint:fix": "npm run lint -- --fix"
