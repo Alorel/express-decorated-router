@@ -38,7 +38,7 @@ describe('Decorators base', () => {
   };
 
   forEach(decorators, (decorator: (path: string) => MethodDecorator, name: string): void => {
-    it(`${name} should add an "${name.toLowerCase()} route`, () => {
+    it(`${name} should add a(n) "${name.toLowerCase()}" route`, () => {
       class X {
         @decorator('/foo')
         public static y() {
