@@ -14,7 +14,7 @@
     "newLine": "lf",
     "noFallthroughCasesInSwitch": true,
     "suppressImplicitAnyIndexErrors": true,
-    "importHelpers": false,
+    "importHelpers": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "moduleResolution": "node",
