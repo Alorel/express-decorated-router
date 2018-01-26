@@ -9,7 +9,7 @@
     "typecheck:watch": "npm run typecheck -- --watch",
     "build": "rimraf dist && tsc",
     "watch": "npm run build -- --watch",
-    "lint": "tslint -p ./tsconfig.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
+    "lint": "tslint -p ./tsconfig.tslint.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
     "lint:fix": "npm run lint -- --fix",
     "test": "nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts"
   },

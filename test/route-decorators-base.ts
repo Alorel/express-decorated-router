@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import forEach = require('lodash/forEach');
 import {ALL} from '../src/decorators/method/ALL';
 import {DELETE} from '../src/decorators/method/DELETE';
 import {GET} from '../src/decorators/method/GET';
@@ -8,13 +9,12 @@ import {PATCH} from '../src/decorators/method/PATCH';
 import {POST} from '../src/decorators/method/POST';
 import {PUT} from '../src/decorators/method/PUT';
 import {ExpressDecoratedRouter} from '../src/ExpressDecoratedRouter';
-import forEach = require('lodash/forEach');
 
 describe('Decorators base', () => {
   let originalAddRoute = ExpressDecoratedRouter.addRoute;
   let addRouteArgs: any[];
 
-  ExpressDecoratedRouter.addRoute = function () {
+  ExpressDecoratedRouter.addRoute = function() {
     addRouteArgs = Array.prototype.slice.call(arguments);
   };
 
