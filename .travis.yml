@@ -1,6 +1,11 @@
-language: generic
-install: true
-script: true
+language: node_js
+node_js: 9
+
+script: npm run lint
+cache:
+  directories:
+    - node_modules
+before_cache: rm -rf node_modules/.cache
 
 #language: node_js
 #node_js: 9

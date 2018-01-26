@@ -1,5 +1,5 @@
-import {RouteRepository} from '../RouteRepository';
-import {Util} from '../Util';
+import {RouteRepository} from '../../RouteRepository';
+import {Util} from '../../Util';
 
 export function Method(httpMethod: string, path: string): MethodDecorator {
   Util.validatePath(path);
