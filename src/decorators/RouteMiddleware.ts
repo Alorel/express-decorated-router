@@ -3,7 +3,7 @@ import {RouteRepository} from '../RouteRepository';
 import {Util} from '../Util';
 
 export function RouteMiddleware(...middleware: RequestHandler[]): MethodDecorator {
-  return function (target: any, key: string | symbol, descriptor: PropertyDescriptor): void {
+  return function(target: any, key: string | symbol, descriptor: PropertyDescriptor): void {
     if (middleware.length) {
       if (!descriptor) {
         descriptor = <PropertyDescriptor>Object.getOwnPropertyDescriptor(target, key);

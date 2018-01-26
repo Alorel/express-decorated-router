@@ -7,7 +7,7 @@ export function ControllerMiddleware(...middleware: RequestHandler[]): ClassDeco
     Util.validateMiddleware(mid);
   }
 
-  return function (constructor: any): void {
+  return function(constructor: any): void {
     if (middleware.length) {
       RouteRepository.addControllerMiddleware(constructor, middleware);
     }

@@ -4,7 +4,7 @@ import {Util} from '../../Util';
 export function Method(httpMethod: string, path: string): MethodDecorator {
   Util.validatePath(path);
 
-  return function (target: any, key: string | symbol, descriptor: PropertyDescriptor): void {
+  return function(target: any, key: string | symbol, descriptor: PropertyDescriptor): void {
     if (!descriptor) {
       descriptor = <PropertyDescriptor>Object.getOwnPropertyDescriptor(target, key);
     }

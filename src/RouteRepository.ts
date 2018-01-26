@@ -1,5 +1,5 @@
-import set = require('lodash/set');
 import {RequestHandler} from 'express';
+import set = require('lodash/set');
 
 interface HttpMethodSpec {
   [path: string]: RequestHandler;
