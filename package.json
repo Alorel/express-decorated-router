@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "typecheck": "tsc -p ./tsconfig.tslint.json --noEmit",
-    "typecheck:watch": "npm run typecheck -- --watch",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p ./tsconfig.typecheck.tests.json",
     "build": "rimraf dist && tsc",
     "watch": "npm run build -- --watch",
     "lint": "tslint -p ./tsconfig.tslint.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
     "lint:fix": "npm run lint -- --fix",
-    "test": "nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts"
+    "test": "nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
+    "test:debug": "cross-env DEBUG=express-decorated-router npm run test"
   },
   "engines": {
     "node": ">=6.0"
@@ -43,6 +43,7 @@
     "@types/express-serve-static-core": "*",
     "express-serve-static-core": "*",
     "lodash": ">=3.7.0 <5.0",
+    "debug": "^3.1.0",
     "tslib": ">=1.6"
   },
   "peerDependencies": {
@@ -50,11 +51,13 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
+    "@types/debug": "0.0.30",
     "@types/lodash": "^4.14",
     "@types/mocha": "^2.2.47",
     "@types/supertest": "^2.0.4",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
+    "cross-env": "^5.1.3",
     "custom-tslint-formatters": "^2.1.1",
     "express": "^4.15",
     "mocha": "^5.0.0",
