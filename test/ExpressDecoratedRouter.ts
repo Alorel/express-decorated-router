@@ -11,7 +11,10 @@ import {HEAD} from '../src/decorators/method/OPTIONS';
 import {PATCH} from '../src/decorators/method/PATCH';
 import {POST} from '../src/decorators/method/POST';
 import {PUT} from '../src/decorators/method/PUT';
+import {Parent} from '../src/decorators/Parent';
 import {RouteMiddleware} from '../src/decorators/RouteMiddleware';
+import {ParentControllerError} from '../src/errors/ParentControllerError';
+import {UnregisteredControllerError} from '../src/errors/UnregisteredControllerError';
 import {ExpressDecoratedRouter} from '../src/ExpressDecoratedRouter';
 
 describe('ExpressDecoratedRouter', () => {
@@ -284,5 +287,90 @@ describe('ExpressDecoratedRouter', () => {
           done(e);
         }
       });
+  });
+
+  describe('Parent', () => {
+    describe('Happy path', () => {
+      beforeEach('Init', () => {
+        @Controller('/root')
+        class P {
+          @GET('/foo')
+          public static route(_req: e.Request, res: e.Response): void {
+            res.end('foo');
+          }
+        }
+
+        @Controller('/child')
+        @Parent(P)
+        class C {
+          @GET('/bar')
+          public static route(_req: e.Request, res: e.Response): void {
+            res.end('bar');
+          }
+        }
+
+        ExpressDecoratedRouter.applyRoutes(app);
+      });
+
+      it('/root/foo should return 200', done => {
+        request.get('/root/foo')
+          .expect(200, 'foo', done);
+      });
+
+      it('/root/bar should return 404', done => {
+        request.get('/root/bar')
+          .expect(404, done);
+      });
+
+      it('/root/child/foo should return 404', done => {
+        request.get('/root/child/foo')
+          .expect(404, done);
+      });
+
+      it('/root/child/bar should return 200', done => {
+        request.get('/root/child/bar')
+          .expect(200, 'bar', done);
+      });
+    });
+
+    it('Should throw if parent is not registered', () => {
+      class P {}
+
+      @Controller()
+      @Parent(P)
+      class C {
+        @GET('/')
+        public static r() {
+        }
+      }
+
+      expect(() => ExpressDecoratedRouter.applyRoutes(app))
+        .to.throw(
+        ParentControllerError,
+        'Parent controller P as specified by child controller C has not been registered'
+      );
+    });
+
+    it('Should throw if child has not been registered', () => {
+      @Controller()
+      class P {
+        @GET('/')
+        public static r() {
+        }
+      }
+
+      @Parent(P)
+      class C {
+        @GET('/')
+        public static r() {
+        }
+      }
+
+      expect(() => ExpressDecoratedRouter.applyRoutes(app))
+        .to.throw(
+        UnregisteredControllerError,
+        'Controller class C has not been registered'
+      );
+    });
   });
 });

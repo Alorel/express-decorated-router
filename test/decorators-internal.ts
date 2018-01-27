@@ -11,6 +11,7 @@ import {HEAD} from '../src/decorators/method/OPTIONS';
 import {PATCH} from '../src/decorators/method/PATCH';
 import {POST} from '../src/decorators/method/POST';
 import {PUT} from '../src/decorators/method/PUT';
+import {Parent} from '../src/decorators/Parent';
 import {RouteMiddleware} from '../src/decorators/RouteMiddleware';
 import {ExpressDecoratedRouter} from '../src/ExpressDecoratedRouter';
 
@@ -65,7 +66,6 @@ describe('Decorators internal', () => {
   });
 
   describe('Controller', () => {
-
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addController;
 
@@ -83,6 +83,30 @@ describe('Decorators internal', () => {
       class C {}
 
       expect(args).to.deep.eq([C, '/foo', {caseSensitive: true}]);
+    });
+  });
+
+  describe('Parent', () => {
+
+    before('override method', () => {
+      originalMethod = ExpressDecoratedRouter.addParent;
+
+      ExpressDecoratedRouter.addParent = function() {
+        args = Array.prototype.slice.call(arguments);
+      };
+    });
+
+    after('Reset method', () => {
+      ExpressDecoratedRouter.addParent = originalMethod;
+    });
+
+    it('Should call addParent', () => {
+      class P {}
+
+      @Parent(P)
+      class C {}
+
+      expect(args).to.deep.eq([C, P]);
     });
   });
 

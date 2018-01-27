@@ -2,7 +2,6 @@
   "defaultSeverity": "error",
   "linterOptions": {
     "exclude": [
-      "**/example/**",
       "**/dist/**",
       "**/build/**/*",
       "**/node_modules/**/*",
@@ -155,10 +154,7 @@
       true,
       1
     ],
-    "max-file-line-count": [
-      true,
-      300
-    ],
+    "max-file-line-count": false,
     "max-line-length": [
       true,
       120

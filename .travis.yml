@@ -9,11 +9,12 @@ cached_stage: &cachedStage
   cache:
     directories:
       - node_modules
+  before_cache: rm -rf ./node_modules/.cache
 
 test_stage: &testStageBase
   stage: *testAndLint
   <<: *cachedStage
-  script: npm test
+  script: npm run test -- --forbid-only --forbid-pending
   before_script: npm run typecheck
   after_success: cat ./coverage/lcov.info | coveralls
 

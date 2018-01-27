@@ -5,17 +5,18 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "typecheck": "concurrently \"tsc --noEmit\"  \"tsc --noEmit -p ./tsconfig.typecheck.tests.json\"",
-    "typecheck:watch": "concurrently \"tsc --noEmit --watch\"  \"tsc --watch --noEmit -p ./tsconfig.typecheck.tests.json\"",
     "clean:dist": "rimraf dist",
     "prebuild": "npm run clean:dist",
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "npm run typecheck -- --watch",
     "build": "tsc",
     "watch": "npm run build -- --watch",
     "lint": "tslint -p ./tsconfig.tslint.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
     "lint:fix": "npm run lint -- --fix",
-    "pretest": "rimraf coverage",
-    "test": "nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
-    "test:debug": "cross-env DEBUG=express-decorated-router npm run test"
+    "pretest": "concurrently \"npm run clean:dist\" \"rimraf coverage\"",
+    "test": "env-cmd ./.test.env nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
+    "test:debug": "cross-env DEBUG=express-decorated-router npm run test",
+    "reinstall": "rm -rf node_modules package-lock.json && npm install"
   },
   "engines": {
     "node": ">=6.0"
@@ -64,6 +65,7 @@
     "coveralls": "^3.0.0",
     "cross-env": "^5.1.3",
     "custom-tslint-formatters": "^2.1.1",
+    "env-cmd": "^7.0.0",
     "express": "^4.15",
     "mocha": "^5.0.0",
     "nyc": "^11.4.1",

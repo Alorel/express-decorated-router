@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.tslint.json",
+  "compilerOptions": {
+    "noUnusedLocals": false
+  }
+}
