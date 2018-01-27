@@ -1,3 +1,4 @@
+import {expect} from 'chai';
 import * as e from 'express';
 import * as supertest from 'supertest';
 import {Controller} from '../src/decorators/Controller';
@@ -249,12 +250,12 @@ describe('ExpressDecoratedRouter', () => {
   it('Middleware', done => {
     const order: string[] = [];
 
-    const cm: e.RequestHandler = (_req: e.Request, res: e.Response, next: e.NextFunction): void => {
+    const cm = (_req: e.Request, res: e.Response, next: any): void => {
       res.header('cm', '1');
       order.push('cm');
       next();
     };
-    const rm: e.RequestHandler = (_req: e.Request, res: e.Response, next: e.NextFunction): void => {
+    const rm = (_req: e.Request, res: e.Response, next: any): void => {
       res.header('rm', '1');
       order.push('rm');
       next();
@@ -277,7 +278,7 @@ describe('ExpressDecoratedRouter', () => {
       .expect('cm', '1')
       .expect(200, result => {
         try {
-          // expect(order).to.deep.eq(['cm', 'rm']);
+          expect(order).to.deep.eq(['cm', 'rm']);
           done(result);
         } catch (e) {
           done(e);
