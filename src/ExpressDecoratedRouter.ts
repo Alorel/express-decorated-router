@@ -15,9 +15,13 @@ interface ControllerSpec {
   root: PathParams;
 }
 
-const routeMap = new Map<any, RouteSpec>();
+// key = controller class
+const routeMap = new Map<Function, RouteSpec>();
+// key = controller class
 const controllerMap = new Map<Function, ControllerSpec>();
+// key = controoller class
 const controllerMiddlewareMap = new Map<Function, RequestHandler[]>();
+// key = method
 const routeMiddlewareMap = new Map<RequestHandler, RequestHandler[]>();
 
 const log = debug('express-decorated-router');
@@ -114,8 +118,7 @@ export class ExpressDecoratedRouter {
           if (routeMiddleware && routeMiddleware.length) {
             log('And has %d middleware functions', routeMiddleware.length);
 
-            requestHandler = routeMiddleware.concat(requestHandler);
-            // router[httpMethod](pathParams, routeMiddleware);
+            router.use(pathParams, routeMiddleware);
           } else {
             log('And has no middleware functions');
           }

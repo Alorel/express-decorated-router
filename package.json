@@ -10,6 +10,7 @@
     "watch": "npm run build -- --watch",
     "lint": "tslint -p ./tsconfig.tslint.json -s node_modules/custom-tslint-formatters/formatters -t grouped",
     "lint:fix": "npm run lint -- --fix",
+    "pretest": "rimraf coverage",
     "test": "nyc mocha --throw-deprecation --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
     "test:debug": "cross-env DEBUG=express-decorated-router npm run test"
   },

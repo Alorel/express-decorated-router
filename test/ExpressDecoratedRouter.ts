@@ -246,7 +246,7 @@ describe('ExpressDecoratedRouter', () => {
     });
   });
 
-  it.only('Middleware', done => {
+  it('Middleware', done => {
     const order: string[] = [];
 
     const cm: e.RequestHandler = (_req: e.Request, res: e.Response, next: e.NextFunction): void => {
@@ -263,7 +263,7 @@ describe('ExpressDecoratedRouter', () => {
     @Controller()
     @ControllerMiddleware(cm)
     class X {
-      @GET('foo')
+      @GET('/foo')
       @RouteMiddleware(rm)
       public static y(_req: e.Request, res: e.Response): void {
         res.end();
