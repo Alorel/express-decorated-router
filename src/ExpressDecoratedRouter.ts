@@ -50,6 +50,7 @@ export class ExpressDecoratedRouter {
     log('Adding %s %s route to controller %s', httpMethod.toUpperCase(), path, clazz.name);
     let routeSpec: RouteSpec = <RouteSpec>routeMap.get(clazz);
 
+    /* istanbul ignore else */
     if (!routeSpec) {
       log('Route spec object does not exist - creating');
       routeSpec = {};
@@ -59,6 +60,7 @@ export class ExpressDecoratedRouter {
     }
 
     let httpMethodSpec: HttpMethodSpec = routeSpec[httpMethod];
+    /* istanbul ignore else */
     if (!httpMethodSpec) {
       log('Http spec map does not exist - creating');
       httpMethodSpec = new Map<PathParams, RequestHandler>();

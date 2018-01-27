@@ -1,10 +1,8 @@
 import {RequestHandler} from 'express';
 import {ExpressDecoratedRouter} from '../ExpressDecoratedRouter';
 
-export function ControllerMiddleware(...middleware: RequestHandler[]): ClassDecorator {
+export function ControllerMiddleware(first: RequestHandler, ...middleware: RequestHandler[]): ClassDecorator {
   return (constructor: Function): void => {
-    if (middleware.length) {
-      ExpressDecoratedRouter.addControllerMiddleware(constructor, middleware);
-    }
+    ExpressDecoratedRouter.addControllerMiddleware(constructor, [first].concat(middleware));
   };
 }

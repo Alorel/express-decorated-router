@@ -13,8 +13,11 @@
   ],
   "exclude": [
     "**/node_modules/**/*",
+    "**/build/**/*",
     "**/test/**/*"
   ],
   "sourceMap": true,
-  "instrument": true
+  "instrument": true,
+  "cache": true,
+  "all": true
 }

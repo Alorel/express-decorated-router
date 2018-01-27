@@ -1,5 +1,6 @@
 import {expect} from 'chai';
 import {PathParams} from 'express-serve-static-core';
+import forEach = require('lodash/forEach');
 import {Controller} from '../src/decorators/Controller';
 import {ControllerMiddleware} from '../src/decorators/ControllerMiddleware';
 import {ALL} from '../src/decorators/method/ALL';
@@ -12,7 +13,6 @@ import {POST} from '../src/decorators/method/POST';
 import {PUT} from '../src/decorators/method/PUT';
 import {RouteMiddleware} from '../src/decorators/RouteMiddleware';
 import {ExpressDecoratedRouter} from '../src/ExpressDecoratedRouter';
-import forEach = require('lodash/forEach');
 
 describe('Decorators internal', () => {
   let originalMethod: any;
@@ -26,7 +26,7 @@ describe('Decorators internal', () => {
     before(() => {
       originalMethod = ExpressDecoratedRouter.addRoute;
 
-      ExpressDecoratedRouter.addRoute = function () {
+      ExpressDecoratedRouter.addRoute = function() {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -69,7 +69,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addController;
 
-      ExpressDecoratedRouter.addController = function () {
+      ExpressDecoratedRouter.addController = function() {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -90,7 +90,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addControllerMiddleware;
 
-      ExpressDecoratedRouter.addControllerMiddleware = function () {
+      ExpressDecoratedRouter.addControllerMiddleware = function() {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -111,7 +111,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addRouteMiddleware;
 
-      ExpressDecoratedRouter.addRouteMiddleware = function () {
+      ExpressDecoratedRouter.addRouteMiddleware = function() {
         args = Array.prototype.slice.call(arguments);
       };
     });
