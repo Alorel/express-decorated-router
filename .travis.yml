@@ -9,13 +9,19 @@ cached_stage: &cachedStage
   cache:
     directories:
       - node_modules
-  before_cache: rm -rf ./node_modules/.cache
+      - example/node_modules
+  before_cache:
+    - rm -rf ./node_modules/.cache
+    - rm -rf example/node_modules/.cache
+    - rm -rf example/node_modules/express-decorated-router
 
 test_stage: &testStageBase
   stage: *testAndLint
   <<: *cachedStage
-  script: npm run test -- --forbid-only --forbid-pending
-  before_script: npm run typecheck
+  script:
+    - npm run test -- --forbid-only --forbid-pending
+    - bash -c "cd example && npm install"
+    - bash -c "cd example && npm test -- --forbid-only --forbid-pending"
   after_success: cat ./coverage/lcov.info | coveralls
 
 jobs:

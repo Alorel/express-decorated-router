@@ -188,6 +188,18 @@ export class ExpressDecoratedRouter {
       if (childRouter) {
         log('Child router found');
         const childSpec: ControllerSpec = <ControllerSpec>controllerMap.get(child);
+        const parentMiddleware: RequestHandler[] | undefined = controllerMiddlewareMap.get(parent);
+
+        if (parentMiddleware && parentMiddleware.length) {
+          log(
+            'Parent router %s has %d middleware applied. Transferring to %s',
+            parent.name,
+            parentMiddleware.length,
+            child.name
+          );
+
+          childRouter.use(parentMiddleware);
+        }
 
         parentRouter.use(childSpec.root, childRouter);
       } else {

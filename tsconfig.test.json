@@ -1,6 +1,10 @@
 {
-  "extends": "./tsconfig.tslint.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
     "noUnusedLocals": false
-  }
+  },
+  "include": [
+    "src",
+    "test"
+  ]
 }

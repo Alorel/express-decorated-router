@@ -1,6 +1,7 @@
 import {expect} from 'chai';
 import * as e from 'express';
 import * as supertest from 'supertest';
+import {HttpStatusCode} from '../example/src/HttpStatusCode';
 import {Controller} from '../src/decorators/Controller';
 import {ControllerMiddleware} from '../src/decorators/ControllerMiddleware';
 import {ALL} from '../src/decorators/method/ALL';
@@ -372,5 +373,77 @@ describe('ExpressDecoratedRouter', () => {
         'Controller class C has not been registered'
       );
     });
+  });
+
+  describe('Parent middleware', () => {
+    beforeEach(() => {
+      @Controller('/foo')
+      @ControllerMiddleware((_req: e.Request, res: e.Response, next: any) => {
+        res.header('applied', '1');
+        next();
+      })
+      class P {
+        @GET('/')
+        public static handler(_req: e.Request, res: e.Response) {
+          res.end('1');
+        }
+      }
+
+      @Parent(P)
+      @Controller('/bar')
+      class C {
+        @GET('/qux')
+        public static handler(_req: e.Request, res: e.Response) {
+          res.end('1');
+        }
+      }
+
+      ExpressDecoratedRouter.applyRoutes(app);
+    });
+
+    it('Should apply middleware to /foo', done => {
+      request.get('/foo')
+        .expect('applied', '1')
+        .expect(HttpStatusCode.OK, '1', done);
+    });
+
+    it('Should apply middleware to /foo/bar/qux', done => {
+      request.get('/foo/bar/qux')
+        .expect('applied', '1')
+        .expect(HttpStatusCode.OK, '1', done);
+    });
+  });
+
+  it('Parent middleware should apply to child routes when they have their own', done => {
+    @Controller('/foo')
+    @ControllerMiddleware((_req: e.Request, res: e.Response, next: any) => {
+      res.header('mparent', '1');
+      next();
+    })
+    class P {
+      @GET('/')
+      public static handler() {
+      }
+    }
+
+    @Parent(P)
+    @Controller('/bar')
+    @ControllerMiddleware((_req: e.Request, res: e.Response, next: any) => {
+      res.header('mchild', '1');
+      next();
+    })
+    class C {
+      @GET('/qux')
+      public static handler(_req: e.Request, res: e.Response) {
+        res.end('1');
+      }
+    }
+
+    ExpressDecoratedRouter.applyRoutes(app);
+
+    request.get('/foo/bar/qux')
+      .expect('mparent', '1')
+      .expect('mchild', '1')
+      .expect(HttpStatusCode.OK, '1', done);
   });
 });

@@ -1,0 +1,16 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "sourceMap": false,
+    "noUnusedLocals": false
+  },
+  "include": [
+    "src/controllers",
+    "index.ts",
+    "types"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

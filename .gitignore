@@ -1,7 +1,7 @@
-.idea/
-node_modules/
+/.idea/
+/node_modules/
 /package-lock.json
 /dist/
 /coverage/
 /.nyc_output/
-/test-out/
+/*.tgz
