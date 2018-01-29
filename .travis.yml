@@ -18,6 +18,7 @@ cached_stage: &cachedStage
 test_stage: &testStageBase
   stage: *testAndLint
   <<: *cachedStage
+  before_script: export EXAMPLE_SKIP_PARENT_NPM_INSTALL=1
   script:
     - npm run test -- --forbid-only --forbid-pending
     - bash -c "cd example && npm install"

@@ -7,8 +7,8 @@ const parentDir: string = dirname(require.resolve('../package'));
 
 let proc: SpawnSyncReturns<Buffer>;
 
-if (process.env.CI) {
-  console.log('Skipping parent npm install on CI');
+if (process.env.EXAMPLE_SKIP_PARENT_NPM_INSTALL) {
+  console.log('EXAMPLE_SKIP_PARENT_NPM_INSTALL environment variable found - skipping parent npm install');
 } else {
   console.log('Running npm install on parent');
   proc = spawn.sync('npm', ['install'], {env: process.env, cwd: parentDir, stdio: 'inherit'});
