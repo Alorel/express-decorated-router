@@ -2,4 +2,11 @@
 /src/
 /build/
 /example/
+/coverage/
+/.nyc_output/
+/test/
 /*.tgz
+/.nycrc
+/*.json
+/.test.env
+/.travis.yml

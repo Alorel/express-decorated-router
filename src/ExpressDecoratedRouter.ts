@@ -6,35 +6,48 @@ import isEmpty = require('lodash/isEmpty');
 import {ParentControllerError} from './errors/ParentControllerError';
 import {UnregisteredControllerError} from './errors/UnregisteredControllerError';
 
+/** Shorthand for a path to request handler map */
 type HttpMethodSpec = Map<PathParams, RequestHandler>;
 
+/** A route spec where HTTP methods are mapped to {@link HttpMethodSpec}s */
 interface RouteSpec {
   [httpMethod: string]: HttpMethodSpec;
 }
 
+/** Controller definition */
 interface ControllerSpec {
+  /** Options passed to {@link Router express.Router()} */
   opts?: RouterOptions;
+  /** The root path of this controller */
   root: PathParams;
 }
 
-// key = controller class
+/** key = controller class */
 const routeMap = new Map<Function, RouteSpec>();
-// key = controller class
+/** key = controller class */
 const controllerMap = new Map<Function, ControllerSpec>();
-// key = controoller class
+/** key = controller class */
 const controllerMiddlewareMap = new Map<Function, RequestHandler[]>();
-// key = method
+/** key = class method */
 const routeMiddlewareMap = new Map<RequestHandler, RequestHandler[]>();
-// key = controller class
+/** key = controller class */
 const routerMap = new Map<Function, Router>();
-// key = child, value = parent
+/** key = child, value = parent */
 const parentMap = new Map<Function, Function>();
 
+/** Debug logger */
 const log = debug('express-decorated-router');
 
+/** Public interface for the express-decorated-router library */
 export class ExpressDecoratedRouter {
 
-  /** @internal */
+  /**
+   * Register a {@link Controller @Controller} decoration
+   * @internal
+   * @param clazz Controller class
+   * @param root Controller root path
+   * @param opts Options passed to {@link Router express.Router()}
+   */
   public static addController(clazz: Function, root: PathParams, opts?: RouterOptions): void {
     controllerMap.set(clazz, {root, opts});
     log(
@@ -45,19 +58,36 @@ export class ExpressDecoratedRouter {
     );
   }
 
-  /** @internal */
+  /**
+   * Register a {@link ControllerMiddleware @ControllerMiddleware} decoration
+   * @internal
+   * @param clazz Controller class
+   * @param middleware Middleware handlers
+   */
   public static addControllerMiddleware(clazz: Function, middleware: RequestHandler[]): void {
     controllerMiddlewareMap.set(clazz, middleware);
     log('Adding %d middleware functions to controller %s', middleware.length, clazz.name);
   }
 
-  /** @internal */
+  /**
+   * Register a {@link Parent @Parent} decoration
+   * @internal
+   * @param child Child controller
+   * @param parent Parent controller
+   */
   public static addParent(child: Function, parent: Function): void {
     log('Setting %s as the parent controller of %s', parent.name, child.name);
     parentMap.set(child, parent);
   }
 
-  /** @internal */
+  /**
+   * Register a route decoration
+   * @internal
+   * @param clazz Controller class
+   * @param httpMethod The HTTP method
+   * @param path The URL path
+   * @param handler The request handler
+   */
   public static addRoute(clazz: Function, httpMethod: string, path: PathParams, handler: RequestHandler): void {
     log('Adding %s %s route to controller %s', httpMethod.toUpperCase(), path, clazz.name);
     let routeSpec: RouteSpec = <RouteSpec>routeMap.get(clazz);
@@ -84,12 +114,24 @@ export class ExpressDecoratedRouter {
     httpMethodSpec.set(path, handler);
   }
 
-  /** @internal */
+  /**
+   * Register a {@link RouteMiddleware @RouteMiddleware} decoration
+   * @internal
+   * @param route The decorated method
+   * @param middleware The middleware functions
+   */
   public static addRouteMiddleware(route: RequestHandler, middleware: RequestHandler[]): void {
     routeMiddlewareMap.set(route, middleware);
     log('Adding %s middleware functions to handler %s', middleware.length, route.name);
   }
 
+  /**
+   * Apply routes to the Express application. You should call {@link ExpressDecoratedRouter.reset reset()} after
+   * calling this.
+   * @param app The Express application
+   * @throws {ParentControllerError} If the input of a @Parent decoration has not been decorated with @Controller
+   * @throws {UnregisteredControllerError} If a class decorated with @Parent was not annotated with @Controller
+   */
   public static applyRoutes(app: Application): void {
     log('Applying routes to Express app');
 
@@ -101,6 +143,10 @@ export class ExpressDecoratedRouter {
     }
   }
 
+  /**
+   * Reset the library, freeing resources. You should call this method after calling
+   * {@link ExpressDecoratedRouter.applyRoutes applyRoutes()}.
+   */
   public static reset(): void {
     log('Resetting route map');
     routeMap.clear();
@@ -121,6 +167,13 @@ export class ExpressDecoratedRouter {
     parentMap.clear();
   }
 
+  /**
+   * Process a Controller decoration
+   * @internal
+   * @param app The Express app
+   * @param controller The controller class
+   * @param controllerSpec The controller specification
+   */
   private static processController(app: Application, controller: Function, controllerSpec: ControllerSpec): void {
     log('Resolved controller as %s, controller spec as %o', controller.name, controllerSpec);
 
@@ -158,6 +211,12 @@ export class ExpressDecoratedRouter {
     }
   }
 
+  /**
+   * Process a ControllerMiddleware decoration
+   * @internal
+   * @param router The Express router this will get applied to
+   * @param controller The controller class
+   */
   private static processControllerMiddleware(router: Router, controller: Function): void {
     if (controllerMiddlewareMap.has(controller)) {
       const controllerMiddleware: RequestHandler[] = <RequestHandler[]>controllerMiddlewareMap.get(controller);
@@ -168,6 +227,14 @@ export class ExpressDecoratedRouter {
     }
   }
 
+  /**
+   * Process a HTTP method spec
+   * @internal
+   * @param router The Express router this will get applied to
+   * @param pathParams The URL
+   * @param requestHandler The request handler
+   * @param httpMethod The HTTP method used
+   */
   private static processHttpMethodSpec(router: Router,
                                        pathParams: PathParams,
                                        requestHandler: RequestHandler,
@@ -177,6 +244,14 @@ export class ExpressDecoratedRouter {
     router[httpMethod](pathParams, requestHandler);
   }
 
+  /**
+   * Process a Parent decoration
+   * @internal
+   * @param child Child controller
+   * @param parent Parent controller
+   * @throws {ParentControllerError} If the parent controller has not been registered
+   * @throws {UnregisteredControllerError} If the child controller hasn't been registered
+   */
   private static processParents(child: Function, parent: Function): void {
     log('Processing parent %s of child %s', parent.name, child.name);
 
@@ -210,6 +285,13 @@ export class ExpressDecoratedRouter {
     }
   }
 
+  /**
+   * Process a @RouteMiddleware decoration
+   * @internal
+   * @param router The Express router this will get applied to
+   * @param pathParams The URL
+   * @param routeMiddleware The middleware to apply
+   */
   private static processRouteMiddleware(router: Router,
                                         pathParams: PathParams,
                                         routeMiddleware?: RequestHandler[]): void {
@@ -222,6 +304,14 @@ export class ExpressDecoratedRouter {
     }
   }
 
+  /**
+   * Process a route specification
+   * @internal
+   * @param router The Express router this will get applied to
+   * @param controller The controller class
+   * @param httpMethod The HTTP method used
+   * @param httpMethodSpec The HTTP method specification
+   */
   private static processRouteSpec(router: Router,
                                   controller: Function,
                                   httpMethod: string,

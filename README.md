@@ -7,3 +7,5 @@
 [![Build Status](https://travis-ci.org/Alorel/express-decorated-router.svg?branch=master)](https://travis-ci.org/Alorel/express-decorated-router)
 
 -----
+
+Define your Express routes in a nice, expressive way using TypeScript decorators!

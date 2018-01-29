@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Define Express routes using TypeScript decorators",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "clean:dist": "rimraf dist",
     "prebuild": "npm run clean:dist",

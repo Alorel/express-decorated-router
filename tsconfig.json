@@ -10,6 +10,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": false,
     "noUnusedLocals": true,
+    "stripInternal": true,
     "noUnusedParameters": true,
     "newLine": "lf",
     "noFallthroughCasesInSwitch": true,
