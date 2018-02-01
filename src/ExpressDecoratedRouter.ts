@@ -1,10 +1,10 @@
 import * as debug from 'debug';
 import {Application, RequestHandler, Router as createRouter, RouterOptions} from 'express';
 import {PathParams, Router} from 'express-serve-static-core';
-import forEach = require('lodash/forEach');
-import isEmpty = require('lodash/isEmpty');
 import {ParentControllerError} from './errors/ParentControllerError';
 import {UnregisteredControllerError} from './errors/UnregisteredControllerError';
+import forEach = require('lodash/forEach');
+import isEmpty = require('lodash/isEmpty');
 
 /** Shorthand for a path to request handler map */
 type HttpMethodSpec = Map<PathParams, RequestHandler>;
@@ -44,6 +44,7 @@ export class ExpressDecoratedRouter {
   /**
    * Register a {@link Controller @Controller} decoration
    * @internal
+   * @hidden
    * @param clazz Controller class
    * @param root Controller root path
    * @param opts Options passed to {@link Router express.Router()}
@@ -61,6 +62,7 @@ export class ExpressDecoratedRouter {
   /**
    * Register a {@link ControllerMiddleware @ControllerMiddleware} decoration
    * @internal
+   * @hidden
    * @param clazz Controller class
    * @param middleware Middleware handlers
    */
@@ -72,6 +74,7 @@ export class ExpressDecoratedRouter {
   /**
    * Register a {@link Parent @Parent} decoration
    * @internal
+   * @hidden
    * @param child Child controller
    * @param parent Parent controller
    */
@@ -83,6 +86,7 @@ export class ExpressDecoratedRouter {
   /**
    * Register a route decoration
    * @internal
+   * @hidden
    * @param clazz Controller class
    * @param httpMethod The HTTP method
    * @param path The URL path
@@ -117,6 +121,7 @@ export class ExpressDecoratedRouter {
   /**
    * Register a {@link RouteMiddleware @RouteMiddleware} decoration
    * @internal
+   * @hidden
    * @param route The decorated method
    * @param middleware The middleware functions
    */
@@ -126,8 +131,7 @@ export class ExpressDecoratedRouter {
   }
 
   /**
-   * Apply routes to the Express application. You should call {@link ExpressDecoratedRouter.reset reset()} after
-   * calling this.
+   * Apply routes to the Express application. You should call reset() after calling this.
    * @param app The Express application
    * @throws {ParentControllerError} If the input of a @Parent decoration has not been decorated with @Controller
    * @throws {UnregisteredControllerError} If a class decorated with @Parent was not annotated with @Controller
@@ -144,8 +148,7 @@ export class ExpressDecoratedRouter {
   }
 
   /**
-   * Reset the library, freeing resources. You should call this method after calling
-   * {@link ExpressDecoratedRouter.applyRoutes applyRoutes()}.
+   * Reset the library, freeing resources. You should call this method after calling applyRoutes()
    */
   public static reset(): void {
     log('Resetting route map');
@@ -170,6 +173,7 @@ export class ExpressDecoratedRouter {
   /**
    * Process a Controller decoration
    * @internal
+   * @hidden
    * @param app The Express app
    * @param controller The controller class
    * @param controllerSpec The controller specification
@@ -214,6 +218,7 @@ export class ExpressDecoratedRouter {
   /**
    * Process a ControllerMiddleware decoration
    * @internal
+   * @hidden
    * @param router The Express router this will get applied to
    * @param controller The controller class
    */
@@ -230,6 +235,7 @@ export class ExpressDecoratedRouter {
   /**
    * Process a HTTP method spec
    * @internal
+   * @hidden
    * @param router The Express router this will get applied to
    * @param pathParams The URL
    * @param requestHandler The request handler
@@ -247,6 +253,7 @@ export class ExpressDecoratedRouter {
   /**
    * Process a Parent decoration
    * @internal
+   * @hidden
    * @param child Child controller
    * @param parent Parent controller
    * @throws {ParentControllerError} If the parent controller has not been registered
@@ -288,6 +295,7 @@ export class ExpressDecoratedRouter {
   /**
    * Process a @RouteMiddleware decoration
    * @internal
+   * @hidden
    * @param router The Express router this will get applied to
    * @param pathParams The URL
    * @param routeMiddleware The middleware to apply
@@ -307,6 +315,7 @@ export class ExpressDecoratedRouter {
   /**
    * Process a route specification
    * @internal
+   * @hidden
    * @param router The Express router this will get applied to
    * @param controller The controller class
    * @param httpMethod The HTTP method used

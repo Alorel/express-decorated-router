@@ -8,5 +8,6 @@
 /*.tgz
 /.nycrc
 /*.json
+/api/
 /.test.env
 /.travis.yml

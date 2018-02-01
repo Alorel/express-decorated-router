@@ -1,4 +1,6 @@
-/** Thrown when an input of a @Parent decoration has not been decorated with @Controller*/
+/**
+ * Thrown when an input of a @Parent decoration has not been decorated with @Controller
+ */
 export class ParentControllerError extends Error {
   /** The child controller */
   public readonly child: Function;
@@ -6,7 +8,8 @@ export class ParentControllerError extends Error {
   public readonly parent: Function;
 
   /**
-   * @private
+   * @internal
+   * @hidden
    * @param child Child controller
    * @param parent Parent controller
    */

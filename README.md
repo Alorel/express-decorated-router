@@ -1,5 +1,7 @@
 # Express Decorated Router
 
+Define your Express routes in a nice, expressive way using TypeScript decorators!
+
 [![NPM](https://nodei.co/npm/express-decorated-router.png?compact=true)](https://www.npmjs.com/package/express-decorated-router)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Alorel/express-decorated-router.svg)](https://greenkeeper.io)
@@ -8,4 +10,36 @@
 
 -----
 
-Define your Express routes in a nice, expressive way using TypeScript decorators!
+# Table of Contents
+
+<!-- START doctoc -->
+<!-- END doctoc -->
+
+# API
+
+## Decorators
+
+###  GET
+
+► **GET**(path: *`PathParams`*): `MethodDecorator`
+
+
+
+
+
+
+Use this handler for the GET HTTP method
+
+
+**Parameters:**
+
+| Param | Type | Description |
+| ------ | ------ | ------ |
+| path | `PathParams`   |  The path this handler will be responsible for |
+
+
+
+
+
+**Returns:** `MethodDecorator`
+

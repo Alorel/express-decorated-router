@@ -1,10 +1,13 @@
-/** Thrown when a class decorated with @Parent was not annotated with @Controller */
+/**
+ * Thrown when a class decorated with @Parent was not annotated with @Controller
+ */
 export class UnregisteredControllerError extends Error {
   /** The controller */
   public readonly controller: Function;
 
   /**
-   * @private
+   * @internal
+   * @hidden
    * @param clazz The class
    */
   public constructor(clazz: Function) {

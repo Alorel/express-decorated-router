@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "clean:dist": "rimraf dist",
+    "doc": "typedoc --json api/api.json --readme none --name \"Express Decorated Router\"  --excludePrivate --excludeNotExported --hideGenerator --mode file src",
+    "doc:build": "env-cmd ./.test.env ts-node build/build-doc.ts",
     "prebuild": "npm run clean:dist",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "npm run typecheck -- --watch",
@@ -74,6 +76,9 @@
     "supertest": "^3.0.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
+    "turndown": "^4.0.1",
+    "turndown-plugin-gfm": "^1.0.1",
+    "typedoc": "^0.9.0",
     "typescript": "^2.6.2"
   }
 }
