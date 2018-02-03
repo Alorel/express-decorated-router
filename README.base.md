@@ -17,6 +17,8 @@ Define your Express routes in a nice, expressive way using TypeScript decorators
 
 # API
 
+<!-- INSERT API HERE -->
+
 # Good practices
 
-
+* Always call `ExpressDecoratedRouter.reset()` after applying your routes to free up resources

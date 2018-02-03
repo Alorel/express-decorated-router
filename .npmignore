@@ -11,3 +11,4 @@
 /api/
 /.test.env
 /.travis.yml
+/README.base.md
