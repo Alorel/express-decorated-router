@@ -25,7 +25,8 @@
     "ts-node": "^4.1.0",
     "tslib": "^1.9.0",
     "tty-table": "^2.5.5",
-    "typescript-lazy-get-decorator": "^1.1.1"
+    "typescript-lazy-get-decorator": "^1.1.1",
+    "typescript": "^2.7.0"
   },
   "devDependencies": {
     "@types/mocha": "^2.2.47",
