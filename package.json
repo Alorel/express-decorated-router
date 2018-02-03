@@ -82,7 +82,7 @@
     "tslint": "^5.9.1",
     "turndown": "^4.0.1",
     "turndown-plugin-gfm": "^1.0.1",
-    "typedoc": "^0.9.0",
-    "typescript": "^2.6.2"
+    "typedoc": "0.9.0",
+    "typescript": "^2.7.0"
   }
 }
