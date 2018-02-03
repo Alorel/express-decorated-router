@@ -1,4 +1,5 @@
 import * as e from 'express';
+import {ExpressDecoratedRouter} from 'express-decorated-router';
 import * as fs from 'fs';
 import * as path from 'path';
 import {Conf} from './src/Conf';
@@ -12,6 +13,8 @@ fs.readdirSync(path.join(__dirname, 'src', 'controllers'), 'utf8')
 
 const app: e.Application = e();
 
+ExpressDecoratedRouter.applyRoutes(app);
+
 app.listen(Conf.PORT, () => {
   const tty: any = require('tty-table');
   const header = [
@@ -22,7 +25,7 @@ app.listen(Conf.PORT, () => {
     },
     {
       value: 'Description',
-      width: 80,
+      width: 80
     }
   ];
   const rows: any[] = require('./src/paths.json');
