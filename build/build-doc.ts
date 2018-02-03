@@ -1,23 +1,27 @@
 import {writeFileSync} from 'fs';
 import * as path from 'path';
 import {ParameterReflection, ProjectReflection, ReflectionKind} from 'typedoc';
-import {Type} from 'typedoc/dist/lib/models';
+import {Comment, Type} from 'typedoc/dist/lib/models';
 import {ReflectionGroup} from 'typedoc/dist/lib/models/ReflectionGroup';
 import {ContainerReflection} from 'typedoc/dist/lib/models/reflections/container';
 import {DeclarationReflection} from 'typedoc/dist/lib/models/reflections/declaration';
 import {SignatureReflection} from 'typedoc/dist/lib/models/reflections/signature';
 import {SourceReference} from 'typedoc/dist/lib/models/sources/file';
+import {ReflectionFlags} from 'typedoc/dist/lib/models/reflections/abstract';
 import sortBy = require('lodash/sortBy');
 import upperFirst = require('lodash/upperFirst');
+import map = require('lodash/map');
 
 //tslint:disable:no-var-requires variable-name
 
-const kindNameHeadingReplacements = new Map<Typedoc.ReflectionKind, string>([
+const kindNameHeadingReplacements = new Map<ReflectionKind, string>([
   [ReflectionKind.Function, 'Decorators']
 ]);
 
 const kindPriority: ReflectionKind[] = [
-  ReflectionKind.Function
+  ReflectionKind.Function,
+  ReflectionKind.Property,
+  ReflectionKind.Method
 ];
 
 function defTyped(packageName: string): string {
@@ -26,11 +30,25 @@ function defTyped(packageName: string): string {
 
 //tslint:disable:max-line-length
 const typeLinks = {
+  Application: defTyped('express'),
+  Error: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error',
   PathParams: defTyped('express-serve-static-core'),
   RequestHandler: defTyped('express'),
   RouterOptions: defTyped('express-serve-static-core')
 };
+
 //tslint:enable:max-line-length
+
+function declarationFilter(dec: DeclarationReflection): boolean {
+  if (dec.inheritedFrom && dec.inheritedFrom.name.startsWith('Error.')) {
+    return false;
+  }
+  if (dec.kind === ReflectionKind.Property && dec.name === 'Error' && dec.flags.isStatic) {
+    return false;
+  }
+
+  return true;
+}
 
 const json: ProjectReflection = require('../api/api.json');
 const projectVersion: string = require('../package.json').version;
@@ -88,10 +106,8 @@ function getTypeLink(type: string): string | null {
   return null;
 }
 
-function getCallSignatureHeader(sig: SignatureReflection): string {
-  let out = `<h${startHeaderLevel + 1}><code>${sig.name}</code>(`;
-
-  out += sig.parameters.map((param: NamedParamReflection): string => {
+function getCallableHeaderParams(params: ParameterReflection[]): string {
+  return map(params, (param: NamedParamReflection): string => {
     const name = param.name + (param.flags.isOptional || param.defaultValue !== undefined ? '?' : '');
 
     if (param.flags.isRest) {
@@ -100,12 +116,31 @@ function getCallSignatureHeader(sig: SignatureReflection): string {
 
     return `<span>${name}: </span><code>${extractParamType(param)}</code>`;
   }).join(', ');
+}
 
-  // for (const param of sig.parameters) {
-  //
-  // }
+function getCallSignatureHeader(sig: SignatureReflection): string {
+  let out = `<h${startHeaderLevel + 1}><code>${sig.name}</code>(`;
+
+  out += getCallableHeaderParams(sig.parameters);
 
   return out + `)</h${startHeaderLevel + 1}>`;
+}
+
+function formatParam(param: ParameterReflection): string {
+  const paramType = extractParamType(param);
+  const paramLink = getTypeLink(paramType);
+
+  let out = '';
+
+  if (paramLink) {
+    out += `<a href="${paramLink}">`;
+  }
+  out += `<code>${paramType + (param.flags.isRest ? '[]' : '')}</code>`;
+  if (paramLink) {
+    out += '</a>';
+  }
+
+  return out;
 }
 
 function getParams(sig: SignatureReflection): string {
@@ -138,21 +173,10 @@ function getParams(sig: SignatureReflection): string {
     out += '<tbody>';
 
     for (const param of sig.parameters) {
-      const paramType = extractParamType(param);
-      const paramLink = getTypeLink(paramType);
-
       out += '<tr>';
       out += `<td><b>${param.name}</b></td>`;
 
-      out += '<td>';
-      if (paramLink) {
-        out += `<a href="${paramLink}">`;
-      }
-      out += `<code>${paramType + (param.flags.isRest ? '[]' : '')}</code>`;
-      if (paramLink) {
-        out += '</a>';
-      }
-      out += '</td>';
+      out += `<td>${formatParam(param)}</td>`;
 
       out +=
         `<td>${param.flags.isOptional || param.flags.isRest || param.defaultValue ? ':x:' : ':heavy_check_mark:'}</td>`;
@@ -165,14 +189,6 @@ function getParams(sig: SignatureReflection): string {
 
       out += '</tr>';
     }
-
-//   <tr>
-//   <td><b>Some param</b></td>
-//   <td>:heavy_check_mark:</td>
-//   <td>Foo</td>
-//   <td>Some desc</td>
-// </tr>
-// </tbody>`;
     out += `</tbody></table>`;
   }
 
@@ -190,50 +206,154 @@ function sortedTags(tags: any[]): any[] {
   });
 }
 
-function processFunction(fn: DeclarationReflection): void {
-  for (let i = 0; i < fn.signatures.length; i++) {
-    const signature: SignatureReflection = fn.signatures[i];
-    const source: SourceReference = fn.sources[i];
-    const hasTags: boolean = !!signature.comment && !!signature.comment.tags && !!signature.comment.tags.length;
+function getModifiers(flags: ReflectionFlags): string {
+  const access = flags.isProtected ? 'protected' : flags.isPrivate ? 'private' : 'public';
+  const isStatic = flags.isStatic ? ' static' : '';
 
-    if (hasTags) {
-      signature.comment.tags = sortedTags(signature.comment.tags);
+  return access + isStatic;
+}
+
+function getMethodHeader(sig: SignatureReflection, method: DeclarationReflection): string {
+  const hLevel = startHeaderLevel + 2; //tslint:disable-line:no-magic-numbers
+  const flags = Object.assign({}, sig.flags, method.flags);
+
+  let out = `<h${hLevel}>${getModifiers(flags)} <code>${sig.name}</code>(`;
+  out += getCallableHeaderParams(sig.parameters);
+
+  return out + `)</h${hLevel}>`;
+}
+
+function getPropertyHeader(prop: DeclarationReflection): string {
+  const hLevel = startHeaderLevel + 2; //tslint:disable-line:no-magic-numbers
+
+  return `<h${hLevel}>${getModifiers(prop.flags)} <code>${prop.name}</code></h${hLevel}>`;
+}
+
+function processTags(comment: Comment) {
+  if (comment && comment.tags && comment.tags.length) {
+    comment.tags = sortedTags(comment.tags);
+
+    html += '<ul>';
+
+    for (const tag of comment.tags) {
+      html += `<li><b>${upperFirst(tag.tag.toLowerCase())}</b>: ${tag.text}</li>`;
     }
 
-    html += getCallSignatureHeader(signature);
+    html += '</ul>';
+  }
+}
 
-    if (signature.comment) {
-      if (signature.comment.shortText) {
-        html += `<p>${signature.comment.shortText.trim()}</p>`;
-      }
-
-      if (signature.comment.text) {
-        html += `<p><i>${signature.comment.text.trim()}</i></p>`;
-      }
-    }
-
-    html += getParams(signature);
-
-    if (hasTags) {
-      html += '<ul>';
-
-      for (const tag of signature.comment.tags) {
-        html += `<li><b>${upperFirst(tag.tag.toLowerCase())}</b>: ${tag.text}</li>`;
-      }
-
-      html += '</ul>';
-    }
-
+function processSource(source: SourceReference) {
+  if (source) {
     const defLink = makeDefinitionLink(source);
     if (defLink) {
       html += `<p><i>Defined in <a href="${defLink}">${source.fileName}:${source.line}</a></i></p>`;
     }
-
-    // const source = fn.sources[i];
-    //
-    // signature.parameters[0].html += `<h2></h2>`;
   }
-  // html += `<h2>${fn.name}</h2>`;
+}
+
+function processFunction(fn: DeclarationReflection): void {
+  for (let i = 0; i < fn.signatures.length; i++) {
+    const signature: SignatureReflection = fn.signatures[i];
+    const source: SourceReference = fn.sources[i];
+
+    html += getCallSignatureHeader(signature);
+
+    processDesc(signature.comment);
+
+    html += getParams(signature);
+
+    processTags(signature.comment);
+    processSource(source);
+  }
+}
+
+function processMethod(fn: DeclarationReflection): void {
+  for (let i = 0; i < fn.signatures.length; i++) {
+    const sig: SignatureReflection = fn.signatures[i];
+    const source: SourceReference = fn.sources[i];
+
+    html += getMethodHeader(sig, fn);
+    processDesc(sig.comment);
+    html += getParams(sig);
+    processTags(sig.comment);
+    processSource(source);
+  }
+}
+
+function processProperty(prop: DeclarationReflection): void {
+  html += getPropertyHeader(prop);
+  processDesc(prop.comment);
+  processTags(prop.comment);
+  processSource((prop.sources || [])[0]);
+}
+
+function processExtends(clazz: DeclarationReflection): void {
+  if (Array.isArray(clazz.extendedTypes) && clazz.extendedTypes.length) {
+    html += `<div><b>Extends</b>: `;
+
+    html += clazz.extendedTypes.map((ext: NamedType): string => {
+      const link = getTypeLink(ext.name);
+
+      let out = link ? `<a href="${link}">` : '';
+      out += `<code>${ext.name}</code>`;
+      if (link) {
+        out += '</a>';
+      }
+
+      return out;
+    }).join(', ');
+
+    html += '</div>';
+  }
+}
+
+function processClass(clazz: DeclarationReflection): void {
+  html += `<h${startHeaderLevel + 1}>${clazz.name}</h${startHeaderLevel + 1}>`;
+  processDesc(clazz.comment);
+  processExtends(clazz);
+  processTags(clazz.comment);
+
+  if (Array.isArray(clazz.sources) && clazz.sources.length) {
+    const source = clazz.sources[0];
+    processSource(source);
+  }
+  clazz.groups = (clazz.groups || []).sort(groupSorter);
+
+  for (const group of clazz.groups) {
+    for (const groupChildID of group.children) {
+      const groupChild: DeclarationReflection = getChildById(
+        clazz,
+        typeof groupChildID === 'number' ? <any>groupChildID : groupChildID.id
+      );
+
+      if (!groupChild.flags.isExported || groupChild.flags.isPrivate || !declarationFilter(groupChild)) {
+        continue;
+      }
+
+      switch (groupChild.kind) {
+        case ReflectionKind.Method:
+          processMethod(groupChild);
+          break;
+        case ReflectionKind.Property:
+          processProperty(groupChild);
+          break;
+        default:
+          console.log(`Unsupported child kind: ${groupChild.kindString}`);
+      }
+    }
+  }
+}
+
+function processDesc(comment: Comment) {
+  if (comment) {
+    if (comment.shortText) {
+      html += `<p>${comment.shortText}</p>`;
+    }
+    if (comment.text) {
+      html += `<p><i>${comment.text}</i></p>`;
+    }
+  }
 }
 
 for (const topLevelGroup of json.groups) {
@@ -244,15 +364,20 @@ for (const topLevelGroup of json.groups) {
   for (const childID of topLevelGroup.children) {
     const child: DeclarationReflection = getChildById(
       json,
-      typeof childID === 'number' ? <any>childID : child.id
+      typeof childID === 'number' ? <any>childID : childID.id
     );
 
-    if (!child.flags.isExported) {
+    if (!child.flags.isExported || !declarationFilter(child)) {
       continue;
     }
 
     if (child.kind === ReflectionKind.Function) {
       processFunction(child);
+    } else if (child.kind === ReflectionKind.Class) {
+      processClass(child);
+    } else {
+      console.log(`Unknown child kind: ${child.kindString}`);
+      continue;
     }
 
     html += '<hr/>';

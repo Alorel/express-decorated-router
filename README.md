@@ -17,29 +17,6 @@ Define your Express routes in a nice, expressive way using TypeScript decorators
 
 # API
 
-## Decorators
+# Good practices
 
-###  GET
-
-► **GET**(path: *`PathParams`*): `MethodDecorator`
-
-
-
-
-
-
-Use this handler for the GET HTTP method
-
-
-**Parameters:**
-
-| Param | Type | Description |
-| ------ | ------ | ------ |
-| path | `PathParams`   |  The path this handler will be responsible for |
-
-
-
-
-
-**Returns:** `MethodDecorator`
 

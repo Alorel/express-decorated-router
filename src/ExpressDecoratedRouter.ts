@@ -1,10 +1,10 @@
 import * as debug from 'debug';
 import {Application, RequestHandler, Router as createRouter, RouterOptions} from 'express';
 import {PathParams, Router} from 'express-serve-static-core';
-import {ParentControllerError} from './errors/ParentControllerError';
-import {UnregisteredControllerError} from './errors/UnregisteredControllerError';
 import forEach = require('lodash/forEach');
 import isEmpty = require('lodash/isEmpty');
+import {ParentControllerError} from './errors/ParentControllerError';
+import {UnregisteredControllerError} from './errors/UnregisteredControllerError';
 
 /** Shorthand for a path to request handler map */
 type HttpMethodSpec = Map<PathParams, RequestHandler>;
