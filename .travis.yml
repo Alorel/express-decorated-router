@@ -48,7 +48,7 @@ jobs:
     - <<: *testStageBase
       node_js: "6.0"
     - stage: *releaseStage
-      node_js: *latest_tested
+      node_js: *latestTested
       script: node ./build/replace-ver.js
       before_script: npm run build:release
       deploy:
