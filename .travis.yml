@@ -4,6 +4,8 @@ group: travis_latest
 
 stages:
   - &testAndLint Test and lint
+  - name: &releaseStage Release
+    if: tag IS present
 
 cached_stage: &cachedStage
   cache:
@@ -45,3 +47,15 @@ jobs:
       node_js: 6
     - <<: *testStageBase
       node_js: "6.0"
+    - stage: *releaseStage
+      node_js: *latest_tested
+      script: node ./build/replace-ver.js
+      before_script: npm run build:release
+      deploy:
+        - provider: npm
+          on:
+            tags: true
+          skip_cleanup: true
+          email: a.molcanovas@gmail.com
+          api_token:
+            secure: "AKcIcgmZKvOsGx77Tlpt1A/kRv7pJPso1/J0GDKQY8mB+R7/t+DTMv97uHGBf1ahGsTQTnRJIivfisCBDhPHDqXBQO7SaiUO7KB6LhqRXAeXaTYULYIenXluXKfRpqPHpCJSJzuGr3ly9+VGChBgTe9U0dNnDkCPAU4ulRp9euL1NL8MG9SWUZKxSkT0FddF0paWBB6MOPmI0w8WgUNeXlcJTmvzZmAtQeQ/Qb2pN8XkUf1FdI831D3J2Xlq1V+T8m2QHVJcWsTikHppse2yMLHfYMCCwF426nRb/WRaY+tgf0x40dldd3GzP40LAhyfG8HQE7fixDZhdLSTGifdMMSoCjK1itkfD6W3GR5rVEgqO9mAer/QC9a2GPw9Bxm62ZqXfnpqKlRn5VG6q0vgKap0tRG6FOsMhSp77FaZKNMmbV1ulIaV5nWBd5oYLwfsTm8ZcVu4q7zE1WL2xBLqZwdHJ0L2Ng5qvepUrKxP1MqLqJHUGAvPDu/9IF53ZBJil6YFDtQA9UzPGjXW32iNNjirP1XVM/2HytwfhLVJ0Chtu7y75UHA9KZ+9AoJbb0f2gaZ9fPQCPiwMlJ1s80Oey+O1byn2bL3TuKAgLPUakugCG2ZOlG4ltLza/UJEfbZ/lun4sn21bigt3QAaBVIwHLjal8j7reoOA7SkkbLbog="

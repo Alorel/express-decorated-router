@@ -5,8 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "clean:dist": "rimraf dist",
-    "doc": "typedoc --json api/api.json --readme none --name \"Express Decorated Router\"  --excludePrivate --excludeNotExported --hideGenerator --mode file src",
-    "doc:build": "env-cmd ./.test.env ts-node build/build-doc.ts",
+    "doc:generate": "typedoc --json api/api.json --readme none --name \"Express Decorated Router\"  --excludePrivate --excludeNotExported --hideGenerator --mode file src",
+    "doc:format": "env-cmd ./.test.env ts-node build/build-doc.ts",
+    "doc:write": "env-cmd ./.test.env ts-node build/merge-doc.ts",
+    "doc:toc": "doctoc --github README.md",
+    "doc": "npm run doc:generate && npm run doc:format && npm run doc:write && npm run doc:toc",
     "prebuild": "npm run clean:dist",
     "typecheck": "tsc --noEmit",
     "typecheck:watch": "npm run typecheck -- --watch",
