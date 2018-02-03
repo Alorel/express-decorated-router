@@ -260,12 +260,29 @@ function processFunction(fn: DeclarationReflection): void {
     html += getCallSignatureHeader(signature);
 
     processDesc(signature.comment);
+    processReturn(signature);
 
     html += getParams(signature);
 
     processTags(signature.comment);
     processSource(source);
   }
+}
+
+function getLinkedType(type: string): string {
+  const link = getTypeLink(type);
+
+  let out = link ? `<a href="${link}">` : '';
+  out += `<code>${type}</code>`;
+  if (link) {
+    out += '</a>';
+  }
+
+  return out;
+}
+
+function processReturn(sig: SignatureReflection): void {
+  html += `<div><b>Returns</b>: ${getLinkedType(sig.type.name)}</div>`;
 }
 
 function processMethod(fn: DeclarationReflection): void {
@@ -275,6 +292,7 @@ function processMethod(fn: DeclarationReflection): void {
 
     html += getMethodHeader(sig, fn);
     processDesc(sig.comment);
+    processReturn(sig);
     html += getParams(sig);
     processTags(sig.comment);
     processSource(source);
@@ -292,17 +310,10 @@ function processExtends(clazz: DeclarationReflection): void {
   if (Array.isArray(clazz.extendedTypes) && clazz.extendedTypes.length) {
     html += `<div><b>Extends</b>: `;
 
-    html += clazz.extendedTypes.map((ext: NamedType): string => {
-      const link = getTypeLink(ext.name);
-
-      let out = link ? `<a href="${link}">` : '';
-      out += `<code>${ext.name}</code>`;
-      if (link) {
-        out += '</a>';
-      }
-
-      return out;
-    }).join(', ');
+    html += clazz.extendedTypes
+      .map((ext: NamedType) => ext.name)
+      .map(getLinkedType)
+      .join(', ');
 
     html += '</div>';
   }

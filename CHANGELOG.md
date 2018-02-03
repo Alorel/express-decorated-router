@@ -1,3 +1,9 @@
+# 1.0.1 (2018-02-03)
+
+* `[fix]` fixed the example code
+* `[feat]` ExpressDecoratedRouter's static methods are now chainable
+* `[doc]` API docs now have return types in them
+
 # 1.0.0 (2018-02-03)
 
 The library has been rewritten from the ground up.

@@ -13,7 +13,7 @@ fs.readdirSync(path.join(__dirname, 'src', 'controllers'), 'utf8')
 
 const app: e.Application = e();
 
-ExpressDecoratedRouter.applyRoutes(app);
+ExpressDecoratedRouter.applyRoutes(app).reset();
 
 app.listen(Conf.PORT, () => {
   const tty: any = require('tty-table');

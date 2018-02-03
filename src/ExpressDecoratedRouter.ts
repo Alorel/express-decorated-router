@@ -136,7 +136,7 @@ export class ExpressDecoratedRouter {
    * @throws {ParentControllerError} If the input of a @Parent decoration has not been decorated with @Controller
    * @throws {UnregisteredControllerError} If a class decorated with @Parent was not annotated with @Controller
    */
-  public static applyRoutes(app: Application): void {
+  public static applyRoutes(app: Application): typeof ExpressDecoratedRouter {
     log('Applying routes to Express app');
 
     for (const controllerMapEntry of controllerMap.entries()) {
@@ -145,12 +145,14 @@ export class ExpressDecoratedRouter {
     for (const parentMapEntry of parentMap.entries()) {
       ExpressDecoratedRouter.processParents(parentMapEntry[0], parentMapEntry[1]);
     }
+
+    return ExpressDecoratedRouter;
   }
 
   /**
    * Reset the library, freeing resources. You should call this method after calling applyRoutes()
    */
-  public static reset(): void {
+  public static reset(): typeof ExpressDecoratedRouter {
     log('Resetting route map');
     routeMap.clear();
 
@@ -168,6 +170,8 @@ export class ExpressDecoratedRouter {
 
     log('Resetting parent map');
     parentMap.clear();
+
+    return ExpressDecoratedRouter;
   }
 
   /**

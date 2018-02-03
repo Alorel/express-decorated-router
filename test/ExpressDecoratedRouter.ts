@@ -18,6 +18,8 @@ import {ParentControllerError} from '../src/errors/ParentControllerError';
 import {UnregisteredControllerError} from '../src/errors/UnregisteredControllerError';
 import {ExpressDecoratedRouter} from '../src/ExpressDecoratedRouter';
 
+//tslint:disable:no-unused-expression
+
 describe('ExpressDecoratedRouter', () => {
   let app: e.Application;
   let request: supertest.SuperTest<supertest.Test>;
@@ -29,6 +31,15 @@ describe('ExpressDecoratedRouter', () => {
 
   afterEach('Reset library', () => {
     ExpressDecoratedRouter.reset();
+  });
+
+  describe('static returns', () => {
+    it('applyRoutes', () => {
+      expect(ExpressDecoratedRouter.applyRoutes(app) === ExpressDecoratedRouter).to.be.true;
+    });
+    it('reset', () => {
+      expect(ExpressDecoratedRouter.reset() === ExpressDecoratedRouter).to.be.true;
+    });
   });
 
   describe('String routes', () => {
@@ -335,7 +346,8 @@ describe('ExpressDecoratedRouter', () => {
     });
 
     it('Should throw if parent is not registered', () => {
-      class P {}
+      class P {
+      }
 
       @Controller()
       @Parent(P)
