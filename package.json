@@ -21,7 +21,9 @@
     "pretest": "concurrently \"npm run clean:dist\" \"rimraf coverage\"",
     "test": "env-cmd ./.test.env nyc mocha --throw-deprecation --exit --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
     "test:debug": "cross-env DEBUG=express-decorated-router npm run test",
-    "reinstall": "rm -rf node_modules package-lock.json && npm install"
+    "reinstall": "rm -rf node_modules package-lock.json && npm install",
+    "preversion": "concurrently \"npm test\" \"npm run lint\"",
+    "postversion": "concurrently \"git push\" \"git push --tags\""
   },
   "engines": {
     "node": ">=6.0"
