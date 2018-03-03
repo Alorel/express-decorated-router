@@ -42,11 +42,9 @@ jobs:
     - <<: *testStageBase
       node_js: 9
     - <<: *testStageBase
-      node_js: 8
+      node_js: lts/carbon
     - <<: *testStageBase
-      node_js: 6
-    - <<: *testStageBase
-      node_js: "6.0"
+      node_js: lts/boron
     - stage: *releaseStage
       node_js: *latestTested
       script: node ./build/replace-ver.js

@@ -1,3 +1,7 @@
+# 1.0.2 (2018-03-03)
+
+* `[tweak]` Made the TypeScript definitions more lenient - `applyRoutes()` now accepts any router, not just the application. Vanilla JavaScript users will see no change whatsoever.
+
 # 1.0.1 (2018-02-03)
 
 * `[fix]` fixed the example code

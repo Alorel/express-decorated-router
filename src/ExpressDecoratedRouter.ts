@@ -1,6 +1,6 @@
 import * as debug from 'debug';
-import {Application, RequestHandler, Router as createRouter, RouterOptions} from 'express';
-import {PathParams, Router} from 'express-serve-static-core';
+import {RequestHandler, Router as createRouter, RouterOptions} from 'express';
+import {IRouter, PathParams} from 'express-serve-static-core';
 import forEach = require('lodash/forEach');
 import isEmpty = require('lodash/isEmpty');
 import {ParentControllerError} from './errors/ParentControllerError';
@@ -31,7 +31,7 @@ const controllerMiddlewareMap = new Map<Function, RequestHandler[]>();
 /** key = class method */
 const routeMiddlewareMap = new Map<RequestHandler, RequestHandler[]>();
 /** key = controller class */
-const routerMap = new Map<Function, Router>();
+const routerMap = new Map<Function, IRouter>();
 /** key = child, value = parent */
 const parentMap = new Map<Function, Function>();
 
@@ -136,7 +136,7 @@ export class ExpressDecoratedRouter {
    * @throws {ParentControllerError} If the input of a @Parent decoration has not been decorated with @Controller
    * @throws {UnregisteredControllerError} If a class decorated with @Parent was not annotated with @Controller
    */
-  public static applyRoutes(app: Application): typeof ExpressDecoratedRouter {
+  public static applyRoutes(app: IRouter): typeof ExpressDecoratedRouter {
     log('Applying routes to Express app');
 
     for (const controllerMapEntry of controllerMap.entries()) {
@@ -182,7 +182,7 @@ export class ExpressDecoratedRouter {
    * @param controller The controller class
    * @param controllerSpec The controller specification
    */
-  private static processController(app: Application, controller: Function, controllerSpec: ControllerSpec): void {
+  private static processController(app: IRouter, controller: Function, controllerSpec: ControllerSpec): void {
     log('Resolved controller as %s, controller spec as %o', controller.name, controllerSpec);
 
     if (!routeMap.has(controller)) {
@@ -197,7 +197,7 @@ export class ExpressDecoratedRouter {
       return;
     }
 
-    const router: Router = createRouter(controllerSpec.opts);
+    const router: IRouter = createRouter(controllerSpec.opts);
 
     ExpressDecoratedRouter.processControllerMiddleware(router, controller);
 
@@ -226,7 +226,7 @@ export class ExpressDecoratedRouter {
    * @param router The Express router this will get applied to
    * @param controller The controller class
    */
-  private static processControllerMiddleware(router: Router, controller: Function): void {
+  private static processControllerMiddleware(router: IRouter, controller: Function): void {
     if (controllerMiddlewareMap.has(controller)) {
       const controllerMiddleware: RequestHandler[] = <RequestHandler[]>controllerMiddlewareMap.get(controller);
       log('Controller %s has %d middleware functions assigned', controller.name, controllerMiddleware.length);
@@ -245,7 +245,7 @@ export class ExpressDecoratedRouter {
    * @param requestHandler The request handler
    * @param httpMethod The HTTP method used
    */
-  private static processHttpMethodSpec(router: Router,
+  private static processHttpMethodSpec(router: IRouter,
                                        pathParams: PathParams,
                                        requestHandler: RequestHandler,
                                        httpMethod: string): void {
@@ -266,10 +266,10 @@ export class ExpressDecoratedRouter {
   private static processParents(child: Function, parent: Function): void {
     log('Processing parent %s of child %s', parent.name, child.name);
 
-    const parentRouter: Router | undefined = routerMap.get(parent);
+    const parentRouter: IRouter | undefined = routerMap.get(parent);
     if (parentRouter) {
       log('Parent router found');
-      const childRouter: Router | undefined = routerMap.get(child);
+      const childRouter: IRouter | undefined = routerMap.get(child);
 
       if (childRouter) {
         log('Child router found');
@@ -304,7 +304,7 @@ export class ExpressDecoratedRouter {
    * @param pathParams The URL
    * @param routeMiddleware The middleware to apply
    */
-  private static processRouteMiddleware(router: Router,
+  private static processRouteMiddleware(router: IRouter,
                                         pathParams: PathParams,
                                         routeMiddleware?: RequestHandler[]): void {
     if (routeMiddleware && routeMiddleware.length) {
@@ -325,7 +325,7 @@ export class ExpressDecoratedRouter {
    * @param httpMethod The HTTP method used
    * @param httpMethodSpec The HTTP method specification
    */
-  private static processRouteSpec(router: Router,
+  private static processRouteSpec(router: IRouter,
                                   controller: Function,
                                   httpMethod: string,
                                   httpMethodSpec: HttpMethodSpec): void {
