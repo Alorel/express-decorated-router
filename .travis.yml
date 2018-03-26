@@ -2,53 +2,56 @@ language: node_js
 sudo: false
 group: travis_latest
 
+node_js:
+  - stable
+  - lts/carbon
+  - lts/boron
+
 stages:
-  - &testAndLint Test and lint
   - name: &releaseStage Release
     if: tag IS present
 
-cached_stage: &cachedStage
-  cache:
-    directories:
-      - node_modules
-      - example/node_modules
+env:
+  global:
+    - EXAMPLE_SKIP_PARENT_NPM_INSTALL=1
+
+cache:
+  directories:
+    - node_modules
+    - example/node_modules
   before_cache:
     - rm -rf ./node_modules/.cache
     - rm -rf example/node_modules/.cache
     - rm -rf example/node_modules/express-decorated-router
 
-test_stage: &testStageBase
-  stage: *testAndLint
-  <<: *cachedStage
-  before_script: export EXAMPLE_SKIP_PARENT_NPM_INSTALL=1
-  script:
-    - npm run test -- --forbid-only --forbid-pending
-    - bash -c "cd example && npm install"
-    - bash -c "cd example && npm test -- --forbid-only --forbid-pending"
-  after_success: cat ./coverage/lcov.info | coveralls
+before_install:
+  - npm install -g greenkeeper-lockfile
+  - greenkeeper-lockfile-update
+
+after_script: if [[ $GH_TOKEN ]]; then greenkeeper-lockfile-upload; fi;
+after_success: cat ./coverage/lcov.info | coveralls
+
+script:
+  - npm run lint
+  - npm run test -- --forbid-only --forbid-pending --retries 3 --timeout 20000
+  - bash -c "cd example && npm install"
+  - bash -c "cd example && npm test -- --forbid-only --forbid-pending --retries 3 --timeout 20000"
 
 jobs:
   include:
-    - stage: *testAndLint
-      <<: *cachedStage
-      node_js: &latestTested 9
-      env:
-        - LINT=1
-      before_install:
-        - cp package.json package.json.bak
-        - node ./build/filter-lint-depedencies.js
-      before_script: mv package.json.bak package.json -f
-      script: npm run lint
-    - <<: *testStageBase
-      node_js: 9
-    - <<: *testStageBase
-      node_js: lts/carbon
-    - <<: *testStageBase
-      node_js: lts/boron
     - stage: *releaseStage
-      node_js: *latestTested
+      node_js: stable
+      before_install: false
+      env:
+        - CI_RELEASE=1
+      cache:
+        directories:
+          - node_modules
+      before_cache: rm -rf ./node_modules/.cache
       script: node ./build/replace-ver.js
       before_script: npm run build:release
+      after_success: false
+      after_script: false
       deploy:
         - provider: npm
           on:
