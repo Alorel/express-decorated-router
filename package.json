@@ -80,7 +80,7 @@
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.3",
     "supertest": "^3.0.0",
-    "ts-node": "^5.0.0",
+    "ts-node": "^6.0.0",
     "tslint": "^5.9.1",
     "turndown": "^4.0.1",
     "turndown-plugin-gfm": "^1.0.1",
