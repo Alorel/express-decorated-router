@@ -27,6 +27,7 @@ cache:
 before_install:
   - npm install -g greenkeeper-lockfile
   - greenkeeper-lockfile-update
+install: npm install
 
 after_script: if [[ $GH_TOKEN ]]; then greenkeeper-lockfile-upload; fi;
 after_success: cat ./coverage/lcov.info | coveralls
