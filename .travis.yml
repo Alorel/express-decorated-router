@@ -19,10 +19,11 @@ cache:
   directories:
     - node_modules
     - example/node_modules
-  before_cache:
-    - rm -rf ./node_modules/.cache
-    - rm -rf example/node_modules/.cache
-    - rm -rf example/node_modules/express-decorated-router
+
+before_cache:
+  - rm -rf ./node_modules/.cache
+  - rm -rf example/node_modules/.cache
+  - rm -rf example/node_modules/express-decorated-router
 
 before_install:
   - npm install -g greenkeeper-lockfile
