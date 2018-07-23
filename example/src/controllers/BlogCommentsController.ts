@@ -15,7 +15,7 @@ const comments = {
 class BlogCommentsController {
 
   @POST('/')
-  @RouteMiddleware(Middleware.jsonBodyParser)
+  @RouteMiddleware(<any>Middleware.jsonBodyParser)
   public static create(req: Request, res: Response) {
     res.status(HttpStatusCode.CREATED)
       .json(req.body);

@@ -8,7 +8,7 @@ import {Middleware} from '../Middleware';
 export class UserController {
 
   @POST('/')
-  @RouteMiddleware(Middleware.jsonBodyParser)
+  @RouteMiddleware(<any>Middleware.jsonBodyParser)
   public static create(req: Request, res: Response): void {
     res.status(HttpStatusCode.CREATED);
     res.json(req.body);
