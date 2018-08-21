@@ -11,3 +11,7 @@
 /api/
 /.test.env
 /.travis.yml
+/git_gpg_keys.asc
+/prepare-gpg-key.sh
+/git_gpg_keys.asc.enc
+/.releaserc.js

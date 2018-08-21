@@ -5,3 +5,4 @@
 /.nyc_output/
 /*.tgz
 /api/
+/git_gpg_keys.asc
