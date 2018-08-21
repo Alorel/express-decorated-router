@@ -1,20 +1,15 @@
 import {writeFileSync} from 'fs';
-import * as path from 'path';
-import {ParameterReflection, ProjectReflection, ReflectionKind} from 'typedoc';
-import {Comment, Type} from 'typedoc/dist/lib/models';
-import {ReflectionGroup} from 'typedoc/dist/lib/models/ReflectionGroup';
-import {ContainerReflection} from 'typedoc/dist/lib/models/reflections/container';
-import {DeclarationReflection} from 'typedoc/dist/lib/models/reflections/declaration';
-import {SignatureReflection} from 'typedoc/dist/lib/models/reflections/signature';
-import {SourceReference} from 'typedoc/dist/lib/models/sources/file';
-import {ReflectionFlags} from 'typedoc/dist/lib/models/reflections/abstract';
+import map = require('lodash/map');
 import sortBy = require('lodash/sortBy');
 import upperFirst = require('lodash/upperFirst');
-import map = require('lodash/map');
+import * as path from 'path';
+import {ContainerReflection, DeclarationReflection, ProjectReflection, ReflectionKind} from 'typedoc';
+import {ReflectionGroup} from '../node_modules/typedoc/dist/lib/models/ReflectionGroup';
+import {SourceReference} from '../node_modules/typedoc/dist/lib/models/sources/file';
 
 //tslint:disable:no-var-requires variable-name
 
-const kindNameHeadingReplacements = new Map<ReflectionKind, string>([
+const kindNameHeadingReplacements = new Map<any, string>([
   [ReflectionKind.Function, 'Decorators']
 ]);
 
@@ -39,7 +34,7 @@ const typeLinks = {
 
 //tslint:enable:max-line-length
 
-function declarationFilter(dec: DeclarationReflection): boolean {
+function declarationFilter(dec: any): boolean {
   if (dec.inheritedFrom && dec.inheritedFrom.name.startsWith('Error.')) {
     return false;
   }
@@ -87,10 +82,7 @@ json.groups = json.groups.sort(groupSorter);
 
 let html = '';
 
-type NamedType = Type & { name: string };
-type NamedParamReflection = ParameterReflection & { type: NamedType; elementType: NamedType };
-
-function extractParamType(param: NamedParamReflection): string {
+function extractParamType(param: any): string {
   if (param.flags.isRest) {
     return param.type.elementType.name;
   }
@@ -106,9 +98,9 @@ function getTypeLink(type: string): string | null {
   return null;
 }
 
-function getCallableHeaderParams(params: ParameterReflection[]): string {
-  return map(params, (param: NamedParamReflection): string => {
-    const name = param.name + (param.flags.isOptional || param.defaultValue !== undefined ? '?' : '');
+function getCallableHeaderParams(params: any[]): string {
+  return map(params, (param: any): string => {
+    const name = `${param.name}${param.flags.isOptional || param.defaultValue !== undefined ? '?' : ''}`;
 
     if (param.flags.isRest) {
       return `...${name}: </span><code>${extractParamType(param)}[]</code>`;
@@ -118,7 +110,7 @@ function getCallableHeaderParams(params: ParameterReflection[]): string {
   }).join(', ');
 }
 
-function getCallSignatureHeader(sig: SignatureReflection): string {
+function getCallSignatureHeader(sig: any): string {
   let out = `<h${startHeaderLevel + 1}><code>${sig.name}</code>(`;
 
   out += getCallableHeaderParams(sig.parameters);
@@ -126,7 +118,7 @@ function getCallSignatureHeader(sig: SignatureReflection): string {
   return out + `)</h${startHeaderLevel + 1}>`;
 }
 
-function formatParam(param: ParameterReflection): string {
+function formatParam(param: any): string {
   const paramType = extractParamType(param);
   const paramLink = getTypeLink(paramType);
 
@@ -143,7 +135,7 @@ function formatParam(param: ParameterReflection): string {
   return out;
 }
 
-function getParams(sig: SignatureReflection): string {
+function getParams(sig: any): string {
   let out = '';
   if (sig.parameters && sig.parameters.length) {
     let hasDefaults = false;
@@ -206,14 +198,14 @@ function sortedTags(tags: any[]): any[] {
   });
 }
 
-function getModifiers(flags: ReflectionFlags): string {
+function getModifiers(flags: any): string {
   const access = flags.isProtected ? 'protected' : flags.isPrivate ? 'private' : 'public';
   const isStatic = flags.isStatic ? ' static' : '';
 
   return access + isStatic;
 }
 
-function getMethodHeader(sig: SignatureReflection, method: DeclarationReflection): string {
+function getMethodHeader(sig: any, method: DeclarationReflection): string {
   const hLevel = startHeaderLevel + 2; //tslint:disable-line:no-magic-numbers
   const flags = Object.assign({}, sig.flags, method.flags);
 
@@ -229,7 +221,7 @@ function getPropertyHeader(prop: DeclarationReflection): string {
   return `<h${hLevel}>${getModifiers(prop.flags)} <code>${prop.name}</code></h${hLevel}>`;
 }
 
-function processTags(comment: Comment) {
+function processTags(comment: any) {
   if (comment && comment.tags && comment.tags.length) {
     comment.tags = sortedTags(comment.tags);
 
@@ -254,7 +246,7 @@ function processSource(source: SourceReference) {
 
 function processFunction(fn: DeclarationReflection): void {
   for (let i = 0; i < fn.signatures.length; i++) {
-    const signature: SignatureReflection = fn.signatures[i];
+    const signature: any = fn.signatures[i];
     const source: SourceReference = fn.sources[i];
 
     html += getCallSignatureHeader(signature);
@@ -281,13 +273,13 @@ function getLinkedType(type: string): string {
   return out;
 }
 
-function processReturn(sig: SignatureReflection): void {
+function processReturn(sig: any): void {
   html += `<div><b>Returns</b>: ${getLinkedType(sig.type.name)}</div>`;
 }
 
 function processMethod(fn: DeclarationReflection): void {
   for (let i = 0; i < fn.signatures.length; i++) {
-    const sig: SignatureReflection = fn.signatures[i];
+    const sig: any = fn.signatures[i];
     const source: SourceReference = fn.sources[i];
 
     html += getMethodHeader(sig, fn);
@@ -311,7 +303,7 @@ function processExtends(clazz: DeclarationReflection): void {
     html += `<div><b>Extends</b>: `;
 
     html += clazz.extendedTypes
-      .map((ext: NamedType) => ext.name)
+      .map((ext: any) => ext.name)
       .map(getLinkedType)
       .join(', ');
 
@@ -356,7 +348,7 @@ function processClass(clazz: DeclarationReflection): void {
   }
 }
 
-function processDesc(comment: Comment) {
+function processDesc(comment: any) {
   if (comment) {
     if (comment.shortText) {
       html += `<p>${comment.shortText}</p>`;
