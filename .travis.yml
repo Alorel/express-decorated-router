@@ -1,11 +1,6 @@
 language: node_js
 sudo: false
 
-node_js:
-- stable
-- lts/carbon
-- lts/boron
-
 stages:
 - Test
 - name: Release
@@ -33,17 +28,27 @@ before_install:
 install: npm install
 
 script:
-- npm run lint
 - npm run test -- --forbid-only --forbid-pending --retries 3 --timeout 20000
 - bash -c "cd example && npm install"
 - bash -c "cd example && npm test -- --forbid-only --forbid-pending --retries 3 --timeout 20000"
-- semantic-release --dry-run
 
 after_script: if [[ $GH_TOKEN ]]; then greenkeeper-lockfile-upload; fi;
 after_success: cat ./coverage/lcov.info | coveralls
 
 jobs:
   include:
+  - stage: Test
+    node_js: stable
+    script:
+    - npm run lint
+    - npm run test -- --forbid-only --forbid-pending --retries 3 --timeout 20000
+    - bash -c "cd example && npm install"
+    - bash -c "cd example && npm test -- --forbid-only --forbid-pending --retries 3 --timeout 20000"
+    - semantic-release --dry-run
+  - stage: Test
+    node_js: lts/carbon
+  - stage: Test
+    node_js: lts/boron
   - stage: Release
     node_js: stable
     before_install: *prepKey
