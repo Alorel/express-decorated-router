@@ -3,6 +3,7 @@
   "include": [
     "src",
     "test",
-    "example"
+    "example",
+    "build"
   ]
 }
