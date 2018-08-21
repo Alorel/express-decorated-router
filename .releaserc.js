@@ -1,6 +1,6 @@
-export const branch = 'master';
-export const tagFormat = '${version}';
-export const prepare = [
+exports.branch = 'master';
+exports.tagFormat = '${version}';
+exports.prepare = [
   '@semantic-release/changelog',
   '@alorel-personal/semantic-release',
   '@semantic-release/npm',
@@ -26,7 +26,7 @@ export const prepare = [
   }
 ];
 
-export const generateNotes = {
+exports.generateNotes = {
   config: '@alorel-personal/conventional-changelog-alorel'
 };
 
