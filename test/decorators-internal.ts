@@ -27,7 +27,7 @@ describe('Decorators internal', () => {
     before(() => {
       originalMethod = ExpressDecoratedRouter.addRoute;
 
-      ExpressDecoratedRouter.addRoute = function() {
+      ExpressDecoratedRouter.addRoute = function () {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -69,7 +69,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addController;
 
-      ExpressDecoratedRouter.addController = function() {
+      ExpressDecoratedRouter.addController = function () {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -91,7 +91,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addParent;
 
-      ExpressDecoratedRouter.addParent = function() {
+      ExpressDecoratedRouter.addParent = function () {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -114,7 +114,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addControllerMiddleware;
 
-      ExpressDecoratedRouter.addControllerMiddleware = function() {
+      ExpressDecoratedRouter.addControllerMiddleware = function () {
         args = Array.prototype.slice.call(arguments);
       };
     });
@@ -135,7 +135,7 @@ describe('Decorators internal', () => {
     before('override method', () => {
       originalMethod = ExpressDecoratedRouter.addRouteMiddleware;
 
-      ExpressDecoratedRouter.addRouteMiddleware = function() {
+      ExpressDecoratedRouter.addRouteMiddleware = function () {
         args = Array.prototype.slice.call(arguments);
       };
     });
