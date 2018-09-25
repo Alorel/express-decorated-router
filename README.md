@@ -88,7 +88,7 @@ Use this handler for any HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/ALL.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/ALL.ts#L8)_
+_Defined in [decorators/method/ALL.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/ALL.ts#L8)_
 
 * * *
 
@@ -105,7 +105,7 @@ Register this class as a controller
 | **root** | `string` | :x: | `"/"` | The root path for this controller |
 | **options** | [`RouterOptions`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :x: |  | Options passed to the Express router initialisation function. |
 
-_Defined in [decorators/Controller.ts:9](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/Controller.ts#L9)_
+_Defined in [decorators/Controller.ts:9](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/Controller.ts#L9)_
 
 * * *
 
@@ -122,7 +122,7 @@ Define middleware for this controller. Any child controller which defines this c
 | **first** | [`RequestHandler`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express/index.d.ts) | :heavy\_check\_mark: | A middleware handler |
 | **middleware** | [`RequestHandler[]`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express/index.d.ts) | :x: | 0..n additional middleware handlers |
 
-_Defined in [decorators/ControllerMiddleware.ts:10](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/ControllerMiddleware.ts#L10)_
+_Defined in [decorators/ControllerMiddleware.ts:10](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/ControllerMiddleware.ts#L10)_
 
 * * *
 
@@ -138,7 +138,7 @@ Use this handler for the DELETE HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/DELETE.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/DELETE.ts#L8)_
+_Defined in [decorators/method/DELETE.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/DELETE.ts#L8)_
 
 * * *
 
@@ -154,7 +154,7 @@ Use this handler for the GET HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/GET.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/GET.ts#L8)_
+_Defined in [decorators/method/GET.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/GET.ts#L8)_
 
 * * *
 
@@ -170,7 +170,7 @@ Use this handler for the HEAD HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/OPTIONS.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/OPTIONS.ts#L8)_
+_Defined in [decorators/method/OPTIONS.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/OPTIONS.ts#L8)_
 
 * * *
 
@@ -189,7 +189,7 @@ Use this handler for the given HTTP method. The method must be one understood by
 
 *   **See**: https://expressjs.com/en/4x/api.html#router.METHOD
 
-_Defined in [decorators/method/Method.ts:10](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/Method.ts#L10)_
+_Defined in [decorators/method/Method.ts:10](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/Method.ts#L10)_
 
 * * *
 
@@ -205,7 +205,7 @@ Use this handler for the OPTIONS HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/HEAD.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/HEAD.ts#L8)_
+_Defined in [decorators/method/HEAD.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/HEAD.ts#L8)_
 
 * * *
 
@@ -221,7 +221,7 @@ Use this handler for the PATCH HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/PATCH.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/PATCH.ts#L8)_
+_Defined in [decorators/method/PATCH.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/PATCH.ts#L8)_
 
 * * *
 
@@ -237,7 +237,7 @@ Use this handler for the POST HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/POST.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/POST.ts#L8)_
+_Defined in [decorators/method/POST.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/POST.ts#L8)_
 
 * * *
 
@@ -253,7 +253,7 @@ Use this handler for the PUT HTTP method
 | --- | --- | --- | --- |
 | **path** | [`PathParams`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express-serve-static-core/index.d.ts) | :heavy\_check\_mark: | The path this handler will be responsible for |
 
-_Defined in [decorators/method/PUT.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/method/PUT.ts#L8)_
+_Defined in [decorators/method/PUT.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/method/PUT.ts#L8)_
 
 * * *
 
@@ -269,7 +269,7 @@ Define another controller as this controller's parent, inheriting its root path 
 | --- | --- | --- | --- |
 | **parentController** | `Function` | :heavy\_check\_mark: | The parent controller |
 
-_Defined in [decorators/Parent.ts:7](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/Parent.ts#L7)_
+_Defined in [decorators/Parent.ts:7](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/Parent.ts#L7)_
 
 * * *
 
@@ -286,7 +286,7 @@ Define middleware for this route
 | **first** | [`RequestHandler`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express/index.d.ts) | :heavy\_check\_mark: | A middleware handler |
 | **middleware** | [`RequestHandler[]`](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/express/index.d.ts) | :x: | 0..n additional middleware handlers |
 
-_Defined in [decorators/RouteMiddleware.ts:9](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/decorators/RouteMiddleware.ts#L9)_
+_Defined in [decorators/RouteMiddleware.ts:9](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/decorators/RouteMiddleware.ts#L9)_
 
 * * *
 
@@ -296,7 +296,7 @@ _Defined in [decorators/RouteMiddleware.ts:9](https://github.com/Alorel/express-
 
 Public interface for the express-decorated-router library
 
-_Defined in [ExpressDecoratedRouter.ts:42](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/ExpressDecoratedRouter.ts#L42)_
+_Defined in [ExpressDecoratedRouter.ts:42](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/ExpressDecoratedRouter.ts#L42)_
 
 #### public static `applyRoutes`(app: `IRouter`)
 
@@ -313,7 +313,7 @@ Apply routes to the Express application. You should call reset() after calling t
 *   **Throws**: {ParentControllerError} If the input of a @Parent decoration has not been decorated with @Controller
 *   **Throws**: {UnregisteredControllerError} If a class decorated with @Parent was not annotated with @Controller
 
-_Defined in [ExpressDecoratedRouter.ts:139](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/ExpressDecoratedRouter.ts#L139)_
+_Defined in [ExpressDecoratedRouter.ts:139](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/ExpressDecoratedRouter.ts#L139)_
 
 #### public static `reset`()
 
@@ -321,7 +321,7 @@ Reset the library, freeing resources. You should call this method after calling 
 
 **Returns**: `ExpressDecoratedRouter`
 
-_Defined in [ExpressDecoratedRouter.ts:155](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/ExpressDecoratedRouter.ts#L155)_
+_Defined in [ExpressDecoratedRouter.ts:155](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/ExpressDecoratedRouter.ts#L155)_
 
 * * *
 
@@ -331,19 +331,19 @@ Thrown when an input of a @Parent decoration has not been decorated with @Contro
 
 **Extends**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-_Defined in [errors/ParentControllerError.ts:4](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/errors/ParentControllerError.ts#L4)_
+_Defined in [errors/ParentControllerError.ts:4](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/errors/ParentControllerError.ts#L4)_
 
 #### public `child`
 
 The child controller
 
-_Defined in [errors/ParentControllerError.ts:6](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/errors/ParentControllerError.ts#L6)_
+_Defined in [errors/ParentControllerError.ts:6](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/errors/ParentControllerError.ts#L6)_
 
 #### public `parent`
 
 The parent controller
 
-_Defined in [errors/ParentControllerError.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/errors/ParentControllerError.ts#L8)_
+_Defined in [errors/ParentControllerError.ts:8](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/errors/ParentControllerError.ts#L8)_
 
 * * *
 
@@ -353,13 +353,13 @@ Thrown when a class decorated with @Parent was not annotated with @Controller
 
 **Extends**: [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error)
 
-_Defined in [errors/UnregisteredControllerError.ts:4](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/errors/UnregisteredControllerError.ts#L4)_
+_Defined in [errors/UnregisteredControllerError.ts:4](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/errors/UnregisteredControllerError.ts#L4)_
 
 #### public `controller`
 
 The controller
 
-_Defined in [errors/UnregisteredControllerError.ts:6](https://github.com/Alorel/express-decorated-router/blob/1.0.3/src/errors/UnregisteredControllerError.ts#L6)_
+_Defined in [errors/UnregisteredControllerError.ts:6](https://github.com/Alorel/express-decorated-router/blob/1.0.4/src/errors/UnregisteredControllerError.ts#L6)_
 
 * * *
 

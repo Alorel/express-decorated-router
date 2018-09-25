@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/Alorel/express-decorated-router/compare/1.0.3...1.0.4) (2018-09-25)
+
+
+### Bug Fixes
+
+* index.ts now correctly exports the PUT method ([59d2d25](https://github.com/Alorel/express-decorated-router/commit/59d2d25)), closes [#20](https://github.com/Alorel/express-decorated-router/issues/20)
+
 ## [1.0.3](https://github.com/Alorel/express-decorated-router/compare/v1.0.2...1.0.3) (2018-09-11)
 
 
