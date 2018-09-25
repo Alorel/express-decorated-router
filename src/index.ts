@@ -14,6 +14,6 @@ export * from './decorators/method/GET';
 export * from './decorators/method/HEAD';
 export * from './decorators/method/Method';
 export * from './decorators/method/OPTIONS';
-export * from './decorators/method/PATCH';
+export * from './decorators/method/PUT';
 export * from './decorators/method/POST';
 export * from './decorators/method/PATCH';
