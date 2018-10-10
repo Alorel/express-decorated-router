@@ -16,3 +16,4 @@
 /git_gpg_keys.asc.enc
 /.releaserc.js
 .github/
+patch-express-serve-static-core.js
