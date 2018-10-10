@@ -4,6 +4,9 @@
     "no-empty": false,
     "max-classes-per-file": false,
     "no-magic-numbers": false,
-    "no-unused-variable": false
+    "no-unused-variable": false,
+    "no-duplicate-string": false,
+    "no-big-function": false,
+    "no-identical-functions": false
   }
 }

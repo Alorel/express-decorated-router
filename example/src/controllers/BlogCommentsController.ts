@@ -27,6 +27,7 @@ class BlogCommentsController {
 
     if (comments[id]) {
       res.json(comments[id]);
+      delete comments[id];
     } else {
       res.status(HttpStatusCode.NOT_FOUND).end();
     }

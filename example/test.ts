@@ -6,6 +6,8 @@ import './src/controllers/BlogHomeController';
 import './src/controllers/UserController';
 import {HttpStatusCode} from './src/HttpStatusCode';
 
+//tslint:disable:no-identical-functions no-duplicate-string
+
 describe('Express-decorated-router example', () => {
   let app: e.Application;
   let request: st.SuperTest<st.Test>;

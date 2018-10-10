@@ -78,7 +78,7 @@ function getChildById(parent: ContainerReflection, id: number): DeclarationRefle
   throw new Error(`Child ${id} not found in parent ${parent.id}`);
 }
 
-json.groups = json.groups.sort(groupSorter);
+json.groups.sort(groupSorter);
 
 let html = '';
 
@@ -174,7 +174,8 @@ function getParams(sig: any): string {
         `<td>${param.flags.isOptional || param.flags.isRest || param.defaultValue ? ':x:' : ':heavy_check_mark:'}</td>`;
 
       if (hasDefaults) {
-        out += `<td>${param.defaultValue !== undefined ? `<code>${param.defaultValue}</code>` : ''}</td>`;
+        const code = `<code>${param.defaultValue}</code>`;
+        out += `<td>${param.defaultValue !== undefined ? code : ''}</td>`;
       }
 
       out += `<td>${param.comment ? param.comment.text.trim() : ''}</td>`;
