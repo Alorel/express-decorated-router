@@ -24,7 +24,7 @@
     "test:debug": "cross-env DEBUG=express-decorated-router npm run test"
   },
   "engines": {
-    "node": ">=6.0"
+    "node": ">=8.0"
   },
   "keywords": [
     "express",
