@@ -47,8 +47,6 @@ jobs:
     - semantic-release --dry-run
   - stage: Test
     node_js: lts/carbon
-  - stage: Test
-    node_js: lts/boron
   - stage: Release
     node_js: stable
     before_install: *prepKey

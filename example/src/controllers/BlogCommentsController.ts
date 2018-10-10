@@ -38,7 +38,7 @@ class BlogCommentsController {
   }
 
   @GET('/:id')
-  public static findOne(req: Request, res: Response) {
+  public static findOne(req: Request, res: Response) { //tslint:disable-line:no-identical-functions
     const id: string = req.params.id.toLowerCase();
     if (comments[id]) {
       res.json(comments[id]);
