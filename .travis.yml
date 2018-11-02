@@ -46,6 +46,8 @@ jobs:
     - bash -c "cd example && npm test -- --forbid-only --forbid-pending --retries 3 --timeout 20000"
     - semantic-release --dry-run
   - stage: Test
+    node_js: lts/dubnium
+  - stage: Test
     node_js: lts/carbon
   - stage: Release
     node_js: stable
