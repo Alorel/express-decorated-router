@@ -85,7 +85,7 @@
     "doctoc": "^1.3.0",
     "env-cmd": "^8.0.1",
     "express": "^4.15",
-    "mocha": "^5.0.0",
+    "mocha": "^6.0.0",
     "nyc": "^13.0.1",
     "rimraf": "^2.6.2",
     "semantic-release": "^15.9.9",
