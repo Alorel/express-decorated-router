@@ -90,7 +90,7 @@
     "rimraf": "^2.6.2",
     "semantic-release": "^15.9.9",
     "source-map-support": "^0.5.3",
-    "supertest": "^3.0.0",
+    "supertest": "^4.0.0",
     "ts-node": "^8.0.2",
     "tty-table": "^2.6.8",
     "turndown": "^5.0.0",
