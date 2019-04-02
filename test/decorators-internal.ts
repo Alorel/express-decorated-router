@@ -80,7 +80,8 @@ describe('Decorators internal', () => {
 
     it('Should call addController', () => {
       @Controller('/foo', {caseSensitive: true})
-      class C {}
+      class C {
+      }
 
       expect(args).to.deep.eq([C, '/foo', {caseSensitive: true}]);
     });
@@ -101,10 +102,12 @@ describe('Decorators internal', () => {
     });
 
     it('Should call addParent', () => {
-      class P {}
+      class P {
+      }
 
       @Parent(P)
-      class C {}
+      class C {
+      }
 
       expect(args).to.deep.eq([C, P]);
     });
@@ -125,7 +128,8 @@ describe('Decorators internal', () => {
 
     it('Should call addControllerMiddleware', () => {
       @ControllerMiddleware(<any>1, <any>0)
-      class X {}
+      class X {
+      }
 
       expect(args).to.deep.eq([X, [1, 0]]);
     });
