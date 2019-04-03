@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser';
 import {Request, Response} from 'express';
-import {LazyGetter} from 'typescript-lazy-get-decorator';
+import {LazyGetter} from 'lazy-get-decorator';
 
 //tslint:disable:no-identical-functions
 
