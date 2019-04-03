@@ -1,4 +1,12 @@
 {
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "example/package.json"
+      ]
+    }
+  },
   "ignore": [
     "typedoc"
   ]
