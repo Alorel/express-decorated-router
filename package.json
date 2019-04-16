@@ -87,7 +87,7 @@
     "express": "^4.15",
     "lazy-get-decorator": "^2.1.0",
     "mocha": "^6.0.0",
-    "nyc": "^13.0.1",
+    "nyc": "^14.0.0",
     "rimraf": "^2.6.2",
     "semantic-release": "^15.9.9",
     "source-map-support": "^0.5.3",
