@@ -10,7 +10,8 @@ exports.prepare = [
   },
   {
     path: '@semantic-release/exec',
-    cmd: 'npm run doc'
+    // cmd: 'npm run doc'
+    cmd: 'npm run doc:toc'
   },
   {
     path: '@semantic-release/git',
