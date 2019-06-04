@@ -1,3 +1,21 @@
+## [1.0.5](https://github.com/Alorel/express-decorated-router/compare/1.0.4...1.0.5) (2019-06-04)
+
+
+### Dependency updates
+
+* **package:** update [@types](https://github.com/types)/node to version 12.0.0 ([aedd2b7](https://github.com/Alorel/express-decorated-router/commit/aedd2b7))
+
+
+### Maintenance
+
+* Ignore typedoc updates ([6aeacdf](https://github.com/Alorel/express-decorated-router/commit/6aeacdf))
+* Update other dependencies ([4d378ee](https://github.com/Alorel/express-decorated-router/commit/4d378ee))
+
+
+### Refactoring
+
+* Fix lint errors ([5f863f5](https://github.com/Alorel/express-decorated-router/commit/5f863f5))
+
 ## [1.0.4](https://github.com/Alorel/express-decorated-router/compare/1.0.3...1.0.4) (2018-09-25)
 
 
