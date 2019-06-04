@@ -6,9 +6,9 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "node ./ensure-dependencies.js",
-    "postinstall": "env-cmd ./.env ts-node ./postinstall.ts",
-    "test": "env-cmd ./.env mocha --full-trace --exit -r ts-node/register -r source-map-support/register test.ts",
-    "start": "cross-env DEBUG=express-decorated-router env-cmd ./.env ts-node index.ts"
+    "postinstall": "env-cmd -f ./.env ts-node ./postinstall.ts",
+    "test": "env-cmd -f ./.env mocha --full-trace --exit -r ts-node/register -r source-map-support/register test.ts",
+    "start": "cross-env DEBUG=express-decorated-router env-cmd -f ./.env ts-node index.ts"
   },
   "keywords": [],
   "author": "",

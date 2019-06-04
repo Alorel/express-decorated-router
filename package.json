@@ -6,10 +6,10 @@
   "scripts": {
     "clean:dist": "rimraf dist",
     "doc:generate": "typedoc --json api/api.json --readme none --name \"Express Decorated Router\"  --excludePrivate --excludeNotExported --hideGenerator --mode file src",
-    "doc:format": "env-cmd ./.test.env ts-node build/build-doc.ts",
-    "doc:write": "env-cmd ./.test.env ts-node build/merge-doc.ts",
+    "doc:format": "env-cmd -f ./.test.env ts-node build/build-doc.ts",
+    "doc:write": "env-cmd -f ./.test.env ts-node build/merge-doc.ts",
     "doc:toc": "doctoc --github README.md",
-    "doc": "npm --scripts-prepend-node-path=auto run doc:generate && npm run doc:format && npm run doc:write && npm run doc:toc",
+    "doc": "npm --scripts-prepend-node-path=auto run doc:generate && npm --scripts-prepend-node-path=auto run doc:format && npm --scripts-prepend-node-path=auto run doc:write && npm --scripts-prepend-node-path=auto run doc:toc",
     "pretypecheck": "node patch-express-serve-static-core.js",
     "prebuild": "npm --scripts-prepend-node-path=auto run clean:dist && npm run pretypecheck",
     "typecheck": "tsc --noEmit",
@@ -20,7 +20,7 @@
     "lint": "alo tslint -p ./tsconfig.tslint.json",
     "lint:fix": "npm --scripts-prepend-node-path=auto run lint -- --fix",
     "pretest": "concurrently \"npm run clean:dist\" \"rimraf coverage\"",
-    "test": "env-cmd ./.test.env nyc mocha --throw-deprecation --exit --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
+    "test": "env-cmd -f ./.test.env nyc mocha --throw-deprecation --exit --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
     "test:debug": "cross-env DEBUG=express-decorated-router npm run test"
   },
   "engines": {
