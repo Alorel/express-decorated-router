@@ -21,7 +21,9 @@
     "lint:fix": "npm --scripts-prepend-node-path=auto run lint -- --fix",
     "pretest": "concurrently \"npm run clean:dist\" \"rimraf coverage\"",
     "test": "env-cmd -f ./.test.env nyc mocha --throw-deprecation --exit --full-trace -r ts-node/register -r source-map-support/register test/**/*.ts",
-    "test:debug": "cross-env DEBUG=express-decorated-router npm run test"
+    "test:debug": "cross-env DEBUG=express-decorated-router npm run test",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "engines": {
     "node": ">=8.0"
@@ -54,7 +56,8 @@
     "debug": "^4.0.0",
     "express-serve-static-core": "*",
     "lodash": ">=3.7.0 <5.0",
-    "tslib": "^1.6.0"
+    "tslib": "^1.6.0",
+    "snyk": "^1.189.0"
   },
   "peerDependencies": {
     "express": ">=4.0 <5.0"
@@ -98,5 +101,6 @@
     "turndown-plugin-gfm": "^1.0.1",
     "typedoc": "0.9.0",
     "typescript": "^3.4.1"
-  }
+  },
+  "snyk": true
 }
