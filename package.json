@@ -63,7 +63,7 @@
     "@alorel-personal/build-tools": "4.5.16",
     "@alorel-personal/conventional-changelog-alorel": "2.1.1",
     "@alorel-personal/semantic-release": "1.4.0",
-    "@alorel-personal/tslint-rules": "4.1.1",
+    "@alorel-personal/tslint-rules": "5.0.0",
     "@semantic-release/changelog": "^3.0.0",
     "@semantic-release/exec": "^3.1.0",
     "@semantic-release/git": "^7.0.1",
