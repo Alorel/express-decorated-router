@@ -5,8 +5,8 @@ Define your Express routes in a nice, expressive way using TypeScript decorators
 [![NPM](https://nodei.co/npm/express-decorated-router.png?compact=true)](https://www.npmjs.com/package/express-decorated-router)
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Alorel/express-decorated-router.svg)](https://greenkeeper.io)
-[![Coverage Status](https://coveralls.io/repos/github/Alorel/express-decorated-router/badge.svg?branch=1.0.5)](https://coveralls.io/github/Alorel/express-decorated-router?branch=1.0.5)
-[![Build Status](https://travis-ci.org/Alorel/express-decorated-router.svg?branch=1.0.5)](https://travis-ci.org/Alorel/express-decorated-router)
+[![Coverage Status](https://coveralls.io/repos/github/Alorel/express-decorated-router/badge.svg?branch=1.0.6)](https://coveralls.io/github/Alorel/express-decorated-router?branch=1.0.6)
+[![Build Status](https://travis-ci.org/Alorel/express-decorated-router.svg?branch=1.0.6)](https://travis-ci.org/Alorel/express-decorated-router)
 
 -----
 

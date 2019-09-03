@@ -1,3 +1,17 @@
+## [1.0.6](https://github.com/Alorel/express-decorated-router/compare/1.0.5...1.0.6) (2019-09-03)
+
+
+### Dependency updates
+
+* **package:** update cross-spawn to version 7.0.0 ([c0f4002](https://github.com/Alorel/express-decorated-router/commit/c0f4002))
+
+
+### Maintenance
+
+* regenerate package-lock ([9b1a204](https://github.com/Alorel/express-decorated-router/commit/9b1a204))
+* Update example & test tslint.jsons ([3a2ebc0](https://github.com/Alorel/express-decorated-router/commit/3a2ebc0))
+* **deps:** bump lodash from 4.17.11 to 4.17.13 ([c682930](https://github.com/Alorel/express-decorated-router/commit/c682930))
+
 ## [1.0.5](https://github.com/Alorel/express-decorated-router/compare/1.0.4...1.0.5) (2019-06-04)
 
 

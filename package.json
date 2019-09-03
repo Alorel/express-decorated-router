@@ -1,6 +1,6 @@
 {
   "name": "express-decorated-router",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Define Express routes using TypeScript decorators",
   "main": "dist/index.js",
   "scripts": {
