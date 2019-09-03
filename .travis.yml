@@ -23,7 +23,6 @@ before_cache:
 before_install:
 - node build/sync-dep-versions.js
 - npm install -g greenkeeper-lockfile
-- &prepKey if [[ $GH_TOKEN ]]; then ./prepare-gpg-key.sh; fi;
 - greenkeeper-lockfile-update
 install: npm install
 
@@ -51,7 +50,7 @@ jobs:
     node_js: lts/carbon
   - stage: Release
     node_js: stable
-    before_install: *prepKey
+    before_install: []
     env:
     - CI_RELEASE=1
     cache:
